@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">M180907_Morse</string>
+    <string name="Morse_key">Morse_key</string>
+    <string name="Morse_Code">Morse_Code</string>
+    <string name="Morse_Game">Morse_Game</string>
+    <string name="set_sound">Sound</string>
+    <string name="set_Light">Light</string>
+    <string name="set_Backlight">Backlight</string>
+
+</resources>
