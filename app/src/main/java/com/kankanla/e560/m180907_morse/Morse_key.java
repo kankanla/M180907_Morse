@@ -117,6 +117,7 @@ public class Morse_key extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             Morse_HZ.LocalBinder binder = (Morse_HZ.LocalBinder) service;
             morse_hz = binder.getService();
+            morse_hz.setTextView(textView);
             morse_hz.loop_play();
         }
 

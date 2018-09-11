@@ -2,15 +2,16 @@ package com.kankanla.e560.m180907_morse;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,39 +26,58 @@ public class Morse_HZ extends Service {
     private int sampleRate = 4400;
     private int AsampleRate = 6000;
     private int flag = 0;
+    private TextView textView;
 
     public Morse_HZ() {
         Log.d(TAG, "Morse_HZ");
     }
 
+    public void setTextView(TextView textView) {
+        this.textView = textView;
+    }
+
     public void addCharacter(String string) {
-        Log.d(TAG,"addCharacter");
+        Log.d(TAG, "addCharacter");
         char[] temp = string.toCharArray();
         for (Character c : temp) {
             morseList.add(c);
         }
-        if(flag == 0) {
+        if (flag == 0) {
             CKC();
         }
     }
 
-    protected void CKC(){
+    protected void CKC() {
         flag = 1;
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                while (true){
+                while (true) {
                     Log.d(TAG, String.valueOf(morseList.remove(0)));
                     try {
                         Thread.sleep(100);
+                        textView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setBackgroundColor(Color.WHITE);
+                            }
+                        });
+
                         VON();
                         Thread.sleep(100);
+                        textView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setBackgroundColor(Color.BLACK);
+                            }
+                        });
+
                         VOFF();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(morseList.isEmpty()){
+                    if (morseList.isEmpty()) {
                         flag = 0;
                         break;
                     }
