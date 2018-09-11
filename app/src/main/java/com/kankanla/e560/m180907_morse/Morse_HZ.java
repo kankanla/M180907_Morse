@@ -8,22 +8,71 @@ import android.media.AudioTrack;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Morse_HZ extends Service {
     private final String TAG = "###Morse_HZ###";
     private IBinder localBinder = new LocalBinder();
     private AudioTrack audioTrack;
     private int buferSize;
+    private List<Character> morseList = new ArrayList<>();
+    private int sampleRate = 4400;
+    private int AsampleRate = 6000;
+    private int flag = 0;
 
     public Morse_HZ() {
         Log.d(TAG, "Morse_HZ");
     }
 
-    public AudioTrack getAudioTrack() {
-        return audioTrack;
+    public void addCharacter(String string) {
+        Log.d(TAG,"addCharacter");
+        char[] temp = string.toCharArray();
+        for (Character c : temp) {
+            morseList.add(c);
+        }
+        if(flag == 0) {
+            CKC();
+        }
+    }
+
+    protected void CKC(){
+        flag = 1;
+        new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void run() {
+                while (true){
+                    Log.d(TAG, String.valueOf(morseList.remove(0)));
+                    try {
+                        Thread.sleep(100);
+                        VON();
+                        Thread.sleep(100);
+                        VOFF();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(morseList.isEmpty()){
+                        flag = 0;
+                        break;
+                    }
+                }
+            }
+        }).start();
+
+    }
+
+    public void setsampleRate(int sampleRate) {
+        this.sampleRate = sampleRate;
+    }
+
+    public void setAsampleRate(int AsampleRate) {
+        this.sampleRate = AsampleRate;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -36,14 +85,12 @@ public class Morse_HZ extends Service {
         audioTrack.setVolume(1.0f);
     }
 
-
     public void loop_play() {
         Thread thread = new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
                 try {
-                    int sampleRate = 4000;
                     buferSize = AudioTrack.getMinBufferSize(
                             sampleRate,
                             AudioFormat.CHANNEL_OUT_MONO,
@@ -61,7 +108,7 @@ public class Morse_HZ extends Service {
 
                     audioTrack.reloadStaticData();
 
-                    byte[] temp = createWaves(sampleRate, 1);
+                    byte[] temp = createWaves(AsampleRate, 1);
                     for (; ; ) {
                         audioTrack.write(temp, 0, temp.length);
                         if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
@@ -69,8 +116,6 @@ public class Morse_HZ extends Service {
                             audioTrack.setVolume(0.0f);
                         }
                     }
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (audioTrack != null) {

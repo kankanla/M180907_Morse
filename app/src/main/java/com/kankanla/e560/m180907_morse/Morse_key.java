@@ -18,7 +18,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -82,6 +81,8 @@ public class Morse_key extends AppCompatActivity {
             public void onClick(View v) {
                 if (morse_hz != null) {
                     morse_hz.Test();
+                    morse_hz.addCharacter("abcdefg");
+
                 } else {
                     Log.d(TAG, "morse_hz == null");
                     return;
@@ -90,40 +91,11 @@ public class Morse_key extends AppCompatActivity {
         });
     }
 
-    interface onTest {
-        public void XXX();
-    }
-
-
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
         Log.d(TAG, Settings.System.getString(this.getContentResolver(), "screen_brightness"));
-
-        class TTT extends TimerTask {
-            private  onTest onTest;
-            public TTT(onTest onTest) {
-                this.onTest = onTest;
-            }
-
-            @Override
-            public void run() {
-                onTest.XXX();
-            }
-        }
-
-        TTT ttt = new TTT(new onTest() {
-            @Override
-            public void XXX() {
-                Log.d(TAG,"222222222222222222222222222");
-            }
-        });
-
-        Timer  timer = new Timer();
-        timer.schedule(ttt,4000);
-
-
     }
 
     private void init() {
@@ -137,7 +109,6 @@ public class Morse_key extends AppCompatActivity {
         lp.screenBrightness = 1.0f;
         getWindow().setAttributes(lp);
         Log.d(TAG, Settings.System.getString(this.getContentResolver(), "screen_brightness"));
-
     }
 
     public ServiceConnection serviceConnection = new ServiceConnection() {
