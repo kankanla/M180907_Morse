@@ -27,6 +27,7 @@ public class Morse_HZ extends Service {
     private int AsampleRate = 6000;
     private int flag = 0;
     private TextView textView;
+    private int baseSpeed = 70;
 
     public Morse_HZ() {
         Log.d(TAG, "Morse_HZ");
@@ -36,6 +37,148 @@ public class Morse_HZ extends Service {
         this.textView = textView;
     }
 
+    public void add_MorseString(String string) {
+        char[] character = string.toCharArray();
+        for (char c : character) {
+            addCharacter(getMorseCode(c));
+            addCharacter(" ");
+        }
+    }
+
+
+    public String getMorseCode(char c) {
+        String temp = null;
+        switch (c) {
+            case ' ':
+                temp = "  ";
+                break;
+            case 'a':
+                temp = ".-";
+                break;
+            case 'A':
+                temp = ".-";
+                break;
+            case 'b':
+                temp = "-...";
+                break;
+            case 'B':
+                temp = "-...";
+                break;
+            case 'c':
+                temp = "-.-.";
+                break;
+            case 'C':
+                temp = "-.-.";
+                break;
+            case 'd':
+                temp = "--.";
+                break;
+            case 'D':
+                temp = "--.";
+                break;
+            case 'e':
+                temp = ".";
+                break;
+            case 'E':
+                temp = ".";
+                break;
+            case 'f':
+                temp = "--.-";
+                break;
+            case 'F':
+                temp = "--.-";
+                break;
+            case 'g':
+                temp = "--.";
+                break;
+            case 'G':
+                temp = "--.";
+                break;
+            case 'h':
+                temp = "....";
+                break;
+            case 'H':
+                temp = "....";
+                break;
+            case 'i':
+                temp = "..";
+                break;
+            case 'I':
+                temp = "..";
+                break;
+            case 'j':
+                temp = ".---";
+                break;
+            case 'J':
+                temp = ".---";
+                break;
+            case 'k':
+                temp = "-.-";
+                break;
+            case 'K':
+                temp = "-.-";
+                break;
+            case 'l':
+                temp = "--.-";
+                break;
+            case 'L':
+                temp = "--.-";
+                break;
+            case 'm':
+                temp = "--";
+                break;
+            case 'M':
+                temp = "--";
+                break;
+            case 'n':
+                temp = "-.";
+                break;
+            case 'N':
+                temp = "-.";
+            case 'o':
+                temp = "---";
+                break;
+            case 'O':
+                temp = "---";
+                break;
+            case 'p':
+                temp = ".--.";
+                break;
+            case 'P':
+                temp = ".--.";
+                break;
+            case 'q':
+                temp = "--.-";
+                break;
+            case 'Q':
+                temp = "--.-";
+                break;
+            case 'r':
+                temp = ".-.";
+                break;
+            case 'R':
+                temp = ".-.";
+                break;
+            case 's':
+                temp = "...";
+                break;
+            case 'S':
+                temp = "...";
+                break;
+            case 't':
+                temp = "...";
+                break;
+            case 'T':
+                temp = "...";
+                break;
+            default:
+                temp = " ";
+                break;
+        }
+        return temp;
+    }
+
+
     public void addCharacter(String string) {
         Log.d(TAG, "addCharacter");
         char[] temp = string.toCharArray();
@@ -43,39 +186,78 @@ public class Morse_HZ extends Service {
             morseList.add(c);
         }
         if (flag == 0) {
-            CKC();
+            CKC2();
         }
     }
 
-    protected void CKC() {
+    protected void CKC2() {
         flag = 1;
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
+                Log.d(TAG, "CKC2");
                 while (true) {
-                    Log.d(TAG, String.valueOf(morseList.remove(0)));
                     try {
-                        Thread.sleep(100);
-                        textView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                textView.setBackgroundColor(Color.WHITE);
-                            }
-                        });
+//                        System.out.println(morseList.get(0));
+                        switch (morseList.remove(0)) {
+                            case ' ':
+                                VOFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                VOFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                break;
+                            case '-':
+                                VON();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.WHITE);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 3);
+                                VOFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                break;
+                            case '.':
+                                VON();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.WHITE);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                VOFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                break;
+                        }
+                    } catch (Exception e) {
 
-                        VON();
-                        Thread.sleep(100);
-                        textView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                textView.setBackgroundColor(Color.BLACK);
-                            }
-                        });
-
-                        VOFF();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                     if (morseList.isEmpty()) {
                         flag = 0;
@@ -84,7 +266,6 @@ public class Morse_HZ extends Service {
                 }
             }
         }).start();
-
     }
 
     public void setsampleRate(int sampleRate) {
