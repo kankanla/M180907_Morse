@@ -81,7 +81,7 @@ public class Morse_key extends AppCompatActivity {
             public void onClick(View v) {
                 if (morse_hz != null) {
                     morse_hz.Test();
-                    morse_hz.addCharacter("abcdefg");
+                    morse_hz.add_MorseString("cqcqcq de abcde");
 
                 } else {
                     Log.d(TAG, "morse_hz == null");
