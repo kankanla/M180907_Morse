@@ -44,34 +44,29 @@ public class Morse_key extends AppCompatActivity {
         init();
         Intent intent = new Intent(this, Morse_HZ.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
-
         button1.setOnTouchListener(new View.OnTouchListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         Log.d(TAG, "ACTION_DOWN");
-                        morse_hz.VON();
+                        morse_hz.Beep_ON();
                         textView.setBackgroundColor(Color.WHITE);
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "ACTION_UP");
-                        morse_hz.VOFF();
+                        morse_hz.Beep_OFF();
                         textView.setBackgroundColor(Color.BLACK);
-
                         break;
                     default:
                 }
-
                 return false;
             }
         });
@@ -81,8 +76,7 @@ public class Morse_key extends AppCompatActivity {
             public void onClick(View v) {
                 if (morse_hz != null) {
                     morse_hz.Test();
-                    morse_hz.add_MorseString("cqcqcq de abcde");
-
+                    morse_hz.add_MorseString("CQCQ DE OSO AR 1234567890 !.-()+++++");
                 } else {
                     Log.d(TAG, "morse_hz == null");
                     return;
@@ -96,6 +90,11 @@ public class Morse_key extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume");
         Log.d(TAG, Settings.System.getString(this.getContentResolver(), "screen_brightness"));
+
+
+
+
+
     }
 
     private void init() {

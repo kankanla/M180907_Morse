@@ -15,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Morse_HZ extends Service {
     private final String TAG = "###Morse_HZ###";
@@ -28,9 +30,89 @@ public class Morse_HZ extends Service {
     private int flag = 0;
     private TextView textView;
     private int baseSpeed = 70;
+    private Semaphore semaphore = new Semaphore(1);
+    private HashMap<String, String> CODE = new HashMap<>();
 
     public Morse_HZ() {
         Log.d(TAG, "Morse_HZ");
+    }
+
+    {
+        CODE.put(" ", " ");
+        CODE.put("A", ".-");
+        CODE.put("B", "-..");
+        CODE.put("C", "-.-.");
+        CODE.put("D", "--.");
+        CODE.put("E", ".");
+        CODE.put("F", "..-.");
+        CODE.put("G", "--.");
+        CODE.put("H", "....");
+        CODE.put("I", "..");
+        CODE.put("J", ".---");
+        CODE.put("K", ".-.");
+        CODE.put("L", "--.-");
+        CODE.put("M", "--");
+        CODE.put("N", "-.");
+        CODE.put("O", "---");
+        CODE.put("P", ".--.");
+        CODE.put("Q", "--.-");
+        CODE.put("R", "-.-");
+        CODE.put("S", "---");
+        CODE.put("T", "-");
+        CODE.put("U", "..-");
+        CODE.put("V", "...-");
+        CODE.put("W", ".--");
+        CODE.put("X", "-..-");
+        CODE.put("Y", "-.--");
+        CODE.put("Z", "--..");
+        CODE.put("a", ".-");
+        CODE.put("b", "-..");
+        CODE.put("c", "-.-.");
+        CODE.put("d", "--.");
+        CODE.put("e", ".");
+        CODE.put("f", "..-.");
+        CODE.put("g", "--.");
+        CODE.put("h", "....");
+        CODE.put("i", "..");
+        CODE.put("j", ".---");
+        CODE.put("k", ".-.");
+        CODE.put("l", "--.-");
+        CODE.put("m", "--");
+        CODE.put("n", "-.");
+        CODE.put("0", "---");
+        CODE.put("p", ".--.");
+        CODE.put("q", "--.-");
+        CODE.put("r", "-.-");
+        CODE.put("s", "---");
+        CODE.put("t", "-");
+        CODE.put("u", "..-");
+        CODE.put("v", "...-");
+        CODE.put("w", ".--");
+        CODE.put("x", "-..-");
+        CODE.put("y", "-.--");
+        CODE.put("z", "--..");
+
+        CODE.put("1", ".----");
+        CODE.put("2", "..---");
+        CODE.put("3", "...--");
+        CODE.put("4", "....-");
+        CODE.put("5", ".....");
+        CODE.put("6", "-....");
+        CODE.put("7", "--...");
+        CODE.put("8", "---..");
+        CODE.put("9", "----.");
+        CODE.put("0", "-----");
+
+        CODE.put(".", ".-.-.-");
+        CODE.put(",", "--..--");
+        CODE.put("?", "..--..");
+        CODE.put("!", "-.-.--");
+        CODE.put("-", "-....-");
+        CODE.put("/", "-..-.");
+        CODE.put("@", ".--.-.");
+        CODE.put("(", "-.--.");
+        CODE.put(")", "-.--.-");
+        CODE.put(")", "-.--.-");
     }
 
     public void setTextView(TextView textView) {
@@ -38,146 +120,18 @@ public class Morse_HZ extends Service {
     }
 
     public void add_MorseString(String string) {
+        String temp = null;
         char[] character = string.toCharArray();
         for (char c : character) {
-            addCharacter(getMorseCode(c));
-            addCharacter(" ");
+            temp = CODE.get(String.valueOf(c));
+            if (temp != null) {
+                addCharacter(CODE.get(String.valueOf(c)));
+                addCharacter(" ");
+            } else {
+                addCharacter(" ");
+            }
         }
     }
-
-
-    public String getMorseCode(char c) {
-        String temp = null;
-        switch (c) {
-            case ' ':
-                temp = "  ";
-                break;
-            case 'a':
-                temp = ".-";
-                break;
-            case 'A':
-                temp = ".-";
-                break;
-            case 'b':
-                temp = "-...";
-                break;
-            case 'B':
-                temp = "-...";
-                break;
-            case 'c':
-                temp = "-.-.";
-                break;
-            case 'C':
-                temp = "-.-.";
-                break;
-            case 'd':
-                temp = "--.";
-                break;
-            case 'D':
-                temp = "--.";
-                break;
-            case 'e':
-                temp = ".";
-                break;
-            case 'E':
-                temp = ".";
-                break;
-            case 'f':
-                temp = "--.-";
-                break;
-            case 'F':
-                temp = "--.-";
-                break;
-            case 'g':
-                temp = "--.";
-                break;
-            case 'G':
-                temp = "--.";
-                break;
-            case 'h':
-                temp = "....";
-                break;
-            case 'H':
-                temp = "....";
-                break;
-            case 'i':
-                temp = "..";
-                break;
-            case 'I':
-                temp = "..";
-                break;
-            case 'j':
-                temp = ".---";
-                break;
-            case 'J':
-                temp = ".---";
-                break;
-            case 'k':
-                temp = "-.-";
-                break;
-            case 'K':
-                temp = "-.-";
-                break;
-            case 'l':
-                temp = "--.-";
-                break;
-            case 'L':
-                temp = "--.-";
-                break;
-            case 'm':
-                temp = "--";
-                break;
-            case 'M':
-                temp = "--";
-                break;
-            case 'n':
-                temp = "-.";
-                break;
-            case 'N':
-                temp = "-.";
-            case 'o':
-                temp = "---";
-                break;
-            case 'O':
-                temp = "---";
-                break;
-            case 'p':
-                temp = ".--.";
-                break;
-            case 'P':
-                temp = ".--.";
-                break;
-            case 'q':
-                temp = "--.-";
-                break;
-            case 'Q':
-                temp = "--.-";
-                break;
-            case 'r':
-                temp = ".-.";
-                break;
-            case 'R':
-                temp = ".-.";
-                break;
-            case 's':
-                temp = "...";
-                break;
-            case 'S':
-                temp = "...";
-                break;
-            case 't':
-                temp = "...";
-                break;
-            case 'T':
-                temp = "...";
-                break;
-            default:
-                temp = " ";
-                break;
-        }
-        return temp;
-    }
-
 
     public void addCharacter(String string) {
         Log.d(TAG, "addCharacter");
@@ -199,10 +153,10 @@ public class Morse_HZ extends Service {
                 Log.d(TAG, "CKC2");
                 while (true) {
                     try {
-//                        System.out.println(morseList.get(0));
+                        semaphore.acquire();
                         switch (morseList.remove(0)) {
                             case ' ':
-                                VOFF();
+                                Beep_OFF();
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -210,7 +164,7 @@ public class Morse_HZ extends Service {
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 1);
-                                VOFF();
+                                Beep_OFF();
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -220,7 +174,7 @@ public class Morse_HZ extends Service {
                                 Thread.sleep(baseSpeed * 1);
                                 break;
                             case '-':
-                                VON();
+                                Beep_ON();
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -228,7 +182,7 @@ public class Morse_HZ extends Service {
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 3);
-                                VOFF();
+                                Beep_OFF();
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -238,7 +192,7 @@ public class Morse_HZ extends Service {
                                 Thread.sleep(baseSpeed * 1);
                                 break;
                             case '.':
-                                VON();
+                                Beep_ON();
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -246,7 +200,7 @@ public class Morse_HZ extends Service {
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 1);
-                                VOFF();
+                                Beep_OFF();
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -255,12 +209,16 @@ public class Morse_HZ extends Service {
                                 });
                                 Thread.sleep(baseSpeed * 1);
                                 break;
+                            default:
+                                break;
                         }
+                        semaphore.release();
                     } catch (Exception e) {
-
+                        Log.e(TAG, "CKC2");
                     }
                     if (morseList.isEmpty()) {
                         flag = 0;
+
                         break;
                     }
                 }
@@ -277,12 +235,12 @@ public class Morse_HZ extends Service {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void VOFF() {
+    public void Beep_OFF() {
         audioTrack.setVolume(0.0f);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void VON() {
+    public void Beep_ON() {
         audioTrack.setVolume(1.0f);
     }
 

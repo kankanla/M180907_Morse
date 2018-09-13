@@ -27,7 +27,7 @@ public class Morse_SQL {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-                Log.d(TAG,"onCreate(SQLiteDatabase db)");
+            Log.d(TAG, "onCreate(SQLiteDatabase db)");
 
         }
 
