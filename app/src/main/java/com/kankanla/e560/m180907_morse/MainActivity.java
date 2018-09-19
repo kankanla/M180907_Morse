@@ -1,9 +1,12 @@
 package com.kankanla.e560.m180907_morse;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonA, buttonB, buttonC;
     private ImageView imageView;
     private Intent intent;
+    private Point point;
 
 
     @Override
@@ -21,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         buttonA = findViewById(R.id.button1);
         buttonA.setText(getString(R.string.Morse_key));
         buttonA.setOnClickListener(this);
@@ -34,6 +40,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonC.setOnClickListener(this);
 
         imageView = findViewById(R.id.imageView2);
+
+        Display display = this.getWindowManager().getDefaultDisplay();
+        point = new Point();
+        display.getSize(point);
+
+        Log.d(TAG, String.valueOf(point.x));
+        Log.d(TAG, String.valueOf(point.y));
 
     }
 

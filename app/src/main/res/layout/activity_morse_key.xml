@@ -15,43 +15,66 @@
 
         <!--トップの光出力と設定部分-->
         <LinearLayout
+            android:id="@+id/l1"
             android:layout_width="match_parent"
             android:layout_height="110dp"
-            android:background="@color/listviewbkcolor">
+            android:background="@color/listviewbkcolor"
+            android:paddingLeft="12dp">
             <!--出力窓-->
             <TextView
                 android:id="@+id/cqcq"
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:layout_gravity="center"
-                android:layout_margin="33dp"
-                android:background="@android:color/black" />
+                android:background="@drawable/out_window" />
             <!--設定項目エリア-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="left|right"
                 android:gravity="right"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:padding="12dp">
 
-                <Switch
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contextClickable="true"
-                    android:text="@string/set_sound" />
+                    android:gravity="right"
+                    android:orientation="vertical">
 
-                <Switch
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contextClickable="true"
-                    android:text="@string/set_Light" />
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contextClickable="true"
+                        android:text="@string/set_sound" />
 
-                <Switch
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contextClickable="true"
+                        android:text="@string/set_Light" />
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contextClickable="true"
+                        android:text="@string/set_Backlight" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contextClickable="true"
-                    android:text="@string/set_Backlight" />
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/button4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:width="88dp"
+                        android:height="88dp"
+                        android:text="Button" />
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -59,8 +82,9 @@
 
         <!--モールスコードリスト部分-->
         <LinearLayout
+            android:id="@+id/l2"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="100dp"
             android:background="@android:color/darker_gray"
             android:orientation="vertical">
 
@@ -75,6 +99,7 @@
 
         <!--下のボタン部分-->
         <LinearLayout
+            android:id="@+id/l3"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_gravity="center"

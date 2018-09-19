@@ -2,7 +2,6 @@ package com.kankanla.e560.m180907_morse;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -25,8 +24,9 @@ public class Morse_HZ extends Service {
     private AudioTrack audioTrack;
     private int buferSize;
     private List<Character> morseList = new ArrayList<>();
+    private int Beeppling = 0;
     private int sampleRate = 4400;
-    private int AsampleRate = 6000;
+    private int AsampleRate = 400;
     private int flag = 0;
     private TextView textView;
     private int baseSpeed = 70;
@@ -38,99 +38,108 @@ public class Morse_HZ extends Service {
     }
 
     {
+        CODE.put("-", "-");
+        CODE.put("・", "・");
+        CODE.put(".", "・");
+
         CODE.put(" ", " ");
-        CODE.put("A", ".-");
-        CODE.put("B", "-..");
-        CODE.put("C", "-.-.");
-        CODE.put("D", "--.");
-        CODE.put("E", ".");
-        CODE.put("F", "..-.");
-        CODE.put("G", "--.");
-        CODE.put("H", "....");
-        CODE.put("I", "..");
+        CODE.put("A", "・-");
+        CODE.put("B", "-・・");
+        CODE.put("C", "-・-・");
+        CODE.put("D", "--・");
+        CODE.put("E", "・");
+        CODE.put("F", "・・-・");
+        CODE.put("G", "--・");
+        CODE.put("H", "・・・・");
+        CODE.put("I", "・・");
         CODE.put("J", ".---");
-        CODE.put("K", ".-.");
-        CODE.put("L", "--.-");
+        CODE.put("K", ".-・");
+        CODE.put("L", "--・-");
         CODE.put("M", "--");
-        CODE.put("N", "-.");
+        CODE.put("N", "-・");
         CODE.put("O", "---");
-        CODE.put("P", ".--.");
-        CODE.put("Q", "--.-");
-        CODE.put("R", "-.-");
+        CODE.put("P", "・--・");
+        CODE.put("Q", "--・-");
+        CODE.put("R", "-・-");
         CODE.put("S", "---");
         CODE.put("T", "-");
-        CODE.put("U", "..-");
-        CODE.put("V", "...-");
-        CODE.put("W", ".--");
-        CODE.put("X", "-..-");
-        CODE.put("Y", "-.--");
-        CODE.put("Z", "--..");
-        CODE.put("a", ".-");
-        CODE.put("b", "-..");
-        CODE.put("c", "-.-.");
-        CODE.put("d", "--.");
-        CODE.put("e", ".");
-        CODE.put("f", "..-.");
-        CODE.put("g", "--.");
-        CODE.put("h", "....");
-        CODE.put("i", "..");
-        CODE.put("j", ".---");
-        CODE.put("k", ".-.");
-        CODE.put("l", "--.-");
+        CODE.put("U", "・・-");
+        CODE.put("V", "・・・-");
+        CODE.put("W", "・--");
+        CODE.put("X", "-・・-");
+        CODE.put("Y", "-・--");
+        CODE.put("Z", "--・・");
+        CODE.put("a", "・-");
+        CODE.put("b", "-・・");
+        CODE.put("c", "-・-・");
+        CODE.put("d", "--・");
+        CODE.put("e", "・");
+        CODE.put("f", "・・-・");
+        CODE.put("g", "--・");
+        CODE.put("h", "・・・・");
+        CODE.put("i", "・・");
+        CODE.put("j", "・---");
+        CODE.put("k", "・-・");
+        CODE.put("l", "--・-");
         CODE.put("m", "--");
-        CODE.put("n", "-.");
-        CODE.put("0", "---");
-        CODE.put("p", ".--.");
-        CODE.put("q", "--.-");
-        CODE.put("r", "-.-");
+        CODE.put("n", "-・");
+        CODE.put("o", "---");
+        CODE.put("p", "・--・");
+        CODE.put("q", "--・-");
+        CODE.put("r", "-・-");
         CODE.put("s", "---");
         CODE.put("t", "-");
-        CODE.put("u", "..-");
-        CODE.put("v", "...-");
-        CODE.put("w", ".--");
-        CODE.put("x", "-..-");
-        CODE.put("y", "-.--");
-        CODE.put("z", "--..");
+        CODE.put("u", "・・-");
+        CODE.put("v", "・・・-");
+        CODE.put("w", "・--");
+        CODE.put("x", "-・・-");
+        CODE.put("y", "-・--");
+        CODE.put("z", "--・・");
 
-        CODE.put("1", ".----");
-        CODE.put("2", "..---");
-        CODE.put("3", "...--");
-        CODE.put("4", "....-");
-        CODE.put("5", ".....");
-        CODE.put("6", "-....");
-        CODE.put("7", "--...");
-        CODE.put("8", "---..");
-        CODE.put("9", "----.");
+        CODE.put("1", "・----");
+        CODE.put("2", "・・---");
+        CODE.put("3", "・・・--");
+        CODE.put("4", "・・・・-");
+        CODE.put("5", "・・・・・");
+        CODE.put("6", "-・・・・");
+        CODE.put("7", "--・・・");
+        CODE.put("8", "---・・");
+        CODE.put("9", "----・");
         CODE.put("0", "-----");
 
-        CODE.put(".", ".-.-.-");
-        CODE.put(",", "--..--");
-        CODE.put("?", "..--..");
-        CODE.put("!", "-.-.--");
-        CODE.put("-", "-....-");
-        CODE.put("/", "-..-.");
-        CODE.put("@", ".--.-.");
-        CODE.put("(", "-.--.");
-        CODE.put(")", "-.--.-");
-        CODE.put(")", "-.--.-");
+        CODE.put(",", "--・・--");
+        CODE.put("?", "・・--・・");
+        CODE.put("!", "-・-・--");
+        CODE.put("/", "-・・-・");
+        CODE.put("@", "・--・-・");
+        CODE.put("(", "-・--・");
+        CODE.put(")", "-・--・-");
     }
 
     public void setTextView(TextView textView) {
+        Log.d(TAG, "setTextView");
         this.textView = textView;
     }
 
     public void add_MorseString(String string) {
+        Log.d(TAG, "add_MorseString");
         String temp = null;
         char[] character = string.toCharArray();
         for (char c : character) {
             temp = CODE.get(String.valueOf(c));
             if (temp != null) {
                 addCharacter(CODE.get(String.valueOf(c)));
-                addCharacter(" ");
+                if (c != '・' && c != ' ' && c != '-' && c != '.') {
+                    addCharacter(" ");
+                }
             } else {
                 addCharacter(" ");
             }
         }
+    }
+
+    public void ClearMorseList() {
+        morseList.clear();
     }
 
     public void addCharacter(String string) {
@@ -145,12 +154,12 @@ public class Morse_HZ extends Service {
     }
 
     protected void CKC2() {
+        Log.d(TAG, "CKC2");
         flag = 1;
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                Log.d(TAG, "CKC2");
                 while (true) {
                     try {
                         semaphore.acquire();
@@ -160,7 +169,7 @@ public class Morse_HZ extends Service {
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        textView.setBackgroundColor(Color.BLACK);
+                                        textView.setBackground(getDrawable(R.drawable.out_window));
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 1);
@@ -168,7 +177,7 @@ public class Morse_HZ extends Service {
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        textView.setBackgroundColor(Color.BLACK);
+                                        textView.setBackground(getDrawable(R.drawable.out_window));
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 1);
@@ -178,7 +187,7 @@ public class Morse_HZ extends Service {
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        textView.setBackgroundColor(Color.WHITE);
+                                        textView.setBackground(getDrawable(R.drawable.out_window2));
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 3);
@@ -186,17 +195,17 @@ public class Morse_HZ extends Service {
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        textView.setBackgroundColor(Color.BLACK);
+                                        textView.setBackground(getDrawable(R.drawable.out_window));
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 1);
                                 break;
-                            case '.':
+                            case '・':
                                 Beep_ON();
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        textView.setBackgroundColor(Color.WHITE);
+                                        textView.setBackground(getDrawable(R.drawable.out_window2));
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 1);
@@ -204,7 +213,7 @@ public class Morse_HZ extends Service {
                                 textView.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        textView.setBackgroundColor(Color.BLACK);
+                                        textView.setBackground(getDrawable(R.drawable.out_window));
                                     }
                                 });
                                 Thread.sleep(baseSpeed * 1);
@@ -214,7 +223,6 @@ public class Morse_HZ extends Service {
                         }
                         semaphore.release();
                     } catch (Exception e) {
-                        Log.e(TAG, "CKC2");
                     }
                     if (morseList.isEmpty()) {
                         flag = 0;
@@ -245,6 +253,11 @@ public class Morse_HZ extends Service {
     }
 
     public void loop_play() {
+        if (Beeppling == 1) {
+            return;
+        }
+        Log.d(TAG, "loop_play");
+        Beeppling = 1;
         Thread thread = new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -267,7 +280,7 @@ public class Morse_HZ extends Service {
 
                     audioTrack.reloadStaticData();
 
-                    byte[] temp = createWaves(AsampleRate, 1);
+                    byte[] temp = createWaves(AsampleRate, 10);
                     for (; ; ) {
                         audioTrack.write(temp, 0, temp.length);
                         if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
@@ -280,6 +293,7 @@ public class Morse_HZ extends Service {
                     if (audioTrack != null) {
                         audioTrack.stop();
                         audioTrack.release();
+                        Beeppling = 0;
                     }
                 }
             }
@@ -288,7 +302,8 @@ public class Morse_HZ extends Service {
     }
 
     public byte[] createWaves(int sampleRate, int time) {
-        int dataNum = (int) ((double) sampleRate * ((double) time / 1000.0));
+        Log.d(TAG, "createWaves");
+        int dataNum = (int) ((double) sampleRate * ((double) time));
         byte[] data = new byte[dataNum];
         int flag = 0;
         for (int i = 0; i < dataNum; i = i + 2) {
