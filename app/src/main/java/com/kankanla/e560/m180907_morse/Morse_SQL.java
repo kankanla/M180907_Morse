@@ -36,7 +36,7 @@ public class Morse_SQL {
     public Cursor list_item() {
         Log.d(TAG, "list_item");
         SQLiteDatabase db = sql_db.getReadableDatabase();
-        String cmd = "select * from main";
+        String cmd = "select * from main order by rowid desc";
         Cursor cursor = db.rawQuery(cmd, null);
         return cursor;
     }

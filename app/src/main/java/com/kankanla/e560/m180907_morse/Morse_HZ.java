@@ -2,6 +2,7 @@ package com.kankanla.e560.m180907_morse;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -149,9 +150,94 @@ public class Morse_HZ extends Service {
             morseList.add(c);
         }
         if (flag == 0) {
-            CKC2();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                CKC3();
+            } else {
+                CKC2();
+            }
         }
     }
+
+    protected void CKC3() {
+        Log.d(TAG, "CKC3");
+        flag = 1;
+        new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        semaphore.acquire();
+                        switch (morseList.remove(0)) {
+                            case ' ':
+                                Beep_OFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                Beep_OFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                break;
+                            case '-':
+                                Beep_ON();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.WHITE);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 3);
+                                Beep_OFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                break;
+                            case '・':
+                                Beep_ON();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.WHITE);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                Beep_OFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                break;
+                            default:
+                                break;
+                        }
+                        semaphore.release();
+                    } catch (Exception e) {
+                    }
+                    if (morseList.isEmpty()) {
+                        flag = 0;
+                        break;
+                    }
+                }
+            }
+        }).start();
+    }
+
 
     protected void CKC2() {
         Log.d(TAG, "CKC2");
@@ -226,7 +312,6 @@ public class Morse_HZ extends Service {
                     }
                     if (morseList.isEmpty()) {
                         flag = 0;
-
                         break;
                     }
                 }

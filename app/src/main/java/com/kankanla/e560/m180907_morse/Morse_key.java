@@ -4,28 +4,36 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 public class Morse_key extends AppCompatActivity {
     private final String TAG = "###Morse_key###";
@@ -33,19 +41,21 @@ public class Morse_key extends AppCompatActivity {
     private TextView textView;
     private Morse_HZ morse_hz;
     private ListView listView;
-    private Timer timer;
-    private TimerTask timerTask;
     private Morse_SQL morse_sql;
-    private Cursor cursor;
     private Point point;
     private LinearLayout l1, l2, l3;
+    private ViewTreeObserver viewTreeObserver;
+    private SharedPreferences shared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_morse_key);
+        getSupportActionBar().hide();
         init();
+        shared = getSharedPreferences("APP_SET", MODE_PRIVATE);
+
 
         button1 = findViewById(R.id.buttonkey1);
         button2 = findViewById(R.id.buttonkey2);
@@ -57,37 +67,88 @@ public class Morse_key extends AppCompatActivity {
         l2 = findViewById(R.id.l2);
         l3 = findViewById(R.id.l3);
 
+//        testonly
+        viewTreeObserver = l3.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
+
+
+        if (shared.getInt("layout2_Height", 0) == 0 || shared.getInt("displayHeight", 0) != point.y) {
+            viewTreeObserver = l3.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
+        } else {
+            ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(point.x, shared.getInt("layout2_Height", 600) - 30);
+            l2.setLayoutParams(layoutParams);
+            GoogleAdmob();
+        }
+
         Intent intent = new Intent(this, Morse_HZ.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         morse_sql = new Morse_SQL(this);
     }
 
+    private ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(point.x, point.y - l1.getHeight() - l3.getHeight() - 30);
+            l2.setLayoutParams(layoutParams);
+            SharedPreferences.Editor editor = shared.edit();
+            editor.putInt("displayWidth", point.x);
+            editor.putInt("displayHeight", point.y);
+            editor.putInt("layout1_Height", l1.getHeight());
+            editor.putInt("layout2_Height", l2.getHeight());
+            editor.putInt("layout3_Height", l3.getHeight());
+            editor.commit();
+        }
+    };
+
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
-        button1.setOnTouchListener(new View.OnTouchListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        Log.d(TAG, "ACTION_DOWN");
-                        morse_hz.Beep_ON();
-//                        textView.setBackgroundColor(Color.WHITE);
-                        textView.setBackground(getDrawable(R.drawable.out_window2));
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        Log.d(TAG, "ACTION_UP");
-                        morse_hz.Beep_OFF();
-//                        textView.setBackgroundColor(Color.BLACK);
-                        textView.setBackground(getDrawable(R.drawable.out_window));
-                        break;
-                    default:
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            button1.setOnTouchListener(new View.OnTouchListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            Log.d(TAG, "ACTION_DOWN");
+                            morse_hz.Beep_ON();
+                            textView.setBackgroundColor(Color.WHITE);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            Log.d(TAG, "ACTION_UP");
+                            morse_hz.Beep_OFF();
+                            textView.setBackgroundColor(Color.BLACK);
+                            break;
+                        default:
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        } else {
+            button1.setOnTouchListener(new View.OnTouchListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            Log.d(TAG, "ACTION_DOWN");
+                            morse_hz.Beep_ON();
+                            textView.setBackground(getDrawable(R.drawable.out_window2));
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            Log.d(TAG, "ACTION_UP");
+                            morse_hz.Beep_OFF();
+                            textView.setBackground(getDrawable(R.drawable.out_window));
+                            break;
+                        default:
+                    }
+                    return false;
+                }
+            });
+        }
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,16 +171,35 @@ public class Morse_key extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(morse_hz, view.getId() + " Item", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(morse_hz, view.getId() + " LongItem", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-
         Myadaputa myadaputa = new Myadaputa(morse_sql.list_item());
         listView.setAdapter(myadaputa);
+    }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
 
     }
 
@@ -141,7 +221,6 @@ public class Morse_key extends AppCompatActivity {
         morse_hz.ClearMorseList();
     }
 
-
     private void init() {
         Log.d(TAG, "init");
         // Keep screen on
@@ -159,7 +238,7 @@ public class Morse_key extends AppCompatActivity {
     }
 
     public ServiceConnection serviceConnection = new ServiceConnection() {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        //        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Morse_HZ.LocalBinder binder = (Morse_HZ.LocalBinder) service;
@@ -217,4 +296,21 @@ public class Morse_key extends AppCompatActivity {
         }
     }
 
+    protected void GoogleAdmob() {
+        AdView adView = new AdView(this);
+        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+
+        adView.setAdSize(AdSize.BANNER);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        RelativeLayout layout = findViewById(R.id.rel_admob);
+        layout.addView(adView, -1, layoutParams);
+    }
 }
