@@ -37,6 +37,7 @@ import com.google.android.gms.ads.AdView;
 
 public class Morse_key extends AppCompatActivity {
     private final String TAG = "###Morse_key###";
+
     private Button button1, button2, button4;
     private TextView textView;
     private Morse_HZ morse_hz;
@@ -56,7 +57,6 @@ public class Morse_key extends AppCompatActivity {
         init();
         shared = getSharedPreferences("APP_SET", MODE_PRIVATE);
 
-
         button1 = findViewById(R.id.buttonkey1);
         button2 = findViewById(R.id.buttonkey2);
         button4 = findViewById(R.id.button4);
@@ -70,7 +70,6 @@ public class Morse_key extends AppCompatActivity {
 //        testonly
         viewTreeObserver = l3.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
-
 
         if (shared.getInt("layout2_Height", 0) == 0 || shared.getInt("displayHeight", 0) != point.y) {
             viewTreeObserver = l3.getViewTreeObserver();
@@ -175,7 +174,10 @@ public class Morse_key extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(morse_hz, view.getId() + " Item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(morse_hz, String.valueOf(view.getId()), Toast.LENGTH_SHORT).show();
+                String code = morse_sql.get_item(view.getId());
+                Toast.makeText(morse_hz, code, Toast.LENGTH_SHORT).show();
+                morse_hz.add_MorseString(code);
             }
         });
 
@@ -193,8 +195,10 @@ public class Morse_key extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-        Myadaputa myadaputa = new Myadaputa(morse_sql.list_item());
-        listView.setAdapter(myadaputa);
+        if (morse_sql.list_item() != null) {
+            Myadaputa myadaputa = new Myadaputa(morse_sql.list_item());
+            listView.setAdapter(myadaputa);
+        }
     }
 
     @Override
@@ -238,7 +242,6 @@ public class Morse_key extends AppCompatActivity {
     }
 
     public ServiceConnection serviceConnection = new ServiceConnection() {
-        //        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Morse_HZ.LocalBinder binder = (Morse_HZ.LocalBinder) service;
@@ -291,6 +294,9 @@ public class Morse_key extends AppCompatActivity {
             }
             list_t.setText(cursor.getString(cursor.getColumnIndex("title")));
             list_c.setText(cursor.getString(cursor.getColumnIndex("acccond")));
+            list_c.setText("");
+
+            convertView.setId(cursor.getInt(cursor.getColumnIndex("id")));
 
             return convertView;
         }

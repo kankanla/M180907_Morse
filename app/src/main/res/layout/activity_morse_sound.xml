@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Morse_Sound">
+
+    <LinearLayout
+        android:id="@+id/bbbb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/cc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="c" />
+
+        <Button
+            android:id="@+id/dd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="d" />
+
+        <Button
+            android:id="@+id/ee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="e" />
+
+        <Button
+            android:id="@+id/ff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="f" />
+
+        <Button
+            android:id="@+id/gg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="g" />
+
+        <Button
+            android:id="@+id/aa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="a" />
+
+        <Button
+            android:id="@+id/bb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="b" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

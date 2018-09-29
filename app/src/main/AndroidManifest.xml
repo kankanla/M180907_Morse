@@ -23,7 +23,8 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".Add_Morse_item"></activity>
+        <activity android:name=".Add_Morse_item" />
+        <activity android:name=".Morse_Sound"></activity>
     </application>
 
 </manifest>

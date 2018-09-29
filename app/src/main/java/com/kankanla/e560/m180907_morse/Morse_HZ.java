@@ -9,6 +9,7 @@ import android.media.AudioTrack;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Process;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.TextView;
@@ -26,11 +27,12 @@ public class Morse_HZ extends Service {
     private int buferSize;
     private List<Character> morseList = new ArrayList<>();
     private int Beeppling = 0;
-    private int sampleRate = 4400;
-    private int AsampleRate = 400;
+    private int sampleRate = 44100;
     private int flag = 0;
     private TextView textView;
     private int baseSpeed = 70;
+    private int beep_size = 0;
+    private byte[] beep_on, beep_off;
     private Semaphore semaphore = new Semaphore(1);
     private HashMap<String, String> CODE = new HashMap<>();
 
@@ -323,10 +325,6 @@ public class Morse_HZ extends Service {
         this.sampleRate = sampleRate;
     }
 
-    public void setAsampleRate(int AsampleRate) {
-        this.sampleRate = AsampleRate;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void Beep_OFF() {
         audioTrack.setVolume(0.0f);
@@ -347,6 +345,7 @@ public class Morse_HZ extends Service {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
+                android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
                 try {
                     buferSize = AudioTrack.getMinBufferSize(
                             sampleRate,
@@ -363,16 +362,29 @@ public class Morse_HZ extends Service {
                             AudioTrack.MODE_STREAM
                     );
 
-                    audioTrack.reloadStaticData();
+                    beep_size = sampleRate / 300 / 2;
 
-                    byte[] temp = createWaves(AsampleRate, 10);
-                    for (; ; ) {
-                        audioTrack.write(temp, 0, temp.length);
+                    beep_on = new byte[sampleRate];
+                    beep_off = new byte[sampleRate];
+                    for (int i = 0; i < sampleRate; i++) {
+                        if (i % 3 == 0) {
+                            beep_on[i] = 127;
+                        } else {
+                            beep_on[i] = 80;
+                        }
+                        beep_off[i] = 0;
+                    }
+
+
+                    while (true) {
+                        audioTrack.write(beep_on, 0, beep_size);
+                        audioTrack.write(beep_off, 0, beep_size);
                         if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
                             audioTrack.play();
                             audioTrack.setVolume(0.0f);
                         }
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (audioTrack != null) {
@@ -385,26 +397,6 @@ public class Morse_HZ extends Service {
         });
         thread.start();
     }
-
-    public byte[] createWaves(int sampleRate, int time) {
-        Log.d(TAG, "createWaves");
-        int dataNum = (int) ((double) sampleRate * ((double) time));
-        byte[] data = new byte[dataNum];
-        int flag = 0;
-        for (int i = 0; i < dataNum; i = i + 2) {
-            if (flag == 0) {
-                data[i] = (byte) 0xff;
-                data[i + 1] = (byte) 0xff;
-                flag++;
-            } else {
-                data[i] = (byte) 0x00;
-                data[i + 1] = (byte) 0x00;
-                flag--;
-            }
-        }
-        return data;
-    }
-
 
     @Override
     public IBinder onBind(Intent intent) {

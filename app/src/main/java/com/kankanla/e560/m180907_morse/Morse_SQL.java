@@ -14,14 +14,12 @@ public class Morse_SQL {
     private final String DB_NAME = "MSQL.db";
     private SQL_DB sql_db;
 
-
     public Morse_SQL(Context context) {
         Log.d(TAG, "add_item");
         Log.d(getClass().getName(), "333");
         this.context = context;
         sql_db = new SQL_DB(context, DB_NAME, null, DB_VERSION);
     }
-
 
     public void add_item(Editable title, Editable CODE) {
         Log.d(TAG, "add_item");
@@ -32,15 +30,25 @@ public class Morse_SQL {
         db.close();
     }
 
+    public String get_item(int id) {
+        Log.d(TAG, "get_item");
+        SQLiteDatabase db = sql_db.getReadableDatabase();
+        String cmd = "select code from main where id = ?";
+        Cursor cursor = db.rawQuery(cmd, new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
+        String code = cursor.getString(cursor.getColumnIndex("code"));
+        db.close();
+        cursor.close();
+        return code;
+    }
 
     public Cursor list_item() {
         Log.d(TAG, "list_item");
         SQLiteDatabase db = sql_db.getReadableDatabase();
-        String cmd = "select * from main order by rowid desc";
+        String cmd = "select * from main order by id desc";
         Cursor cursor = db.rawQuery(cmd, null);
         return cursor;
     }
-
 
     public class SQL_DB extends SQLiteOpenHelper {
 
