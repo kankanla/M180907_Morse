@@ -47,6 +47,7 @@ public class Morse_key extends AppCompatActivity {
     private LinearLayout l1, l2, l3;
     private ViewTreeObserver viewTreeObserver;
     private SharedPreferences shared;
+    private int longClk = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +163,7 @@ public class Morse_key extends AppCompatActivity {
             }
         });
 
+
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,21 +173,31 @@ public class Morse_key extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(morse_hz, String.valueOf(view.getId()), Toast.LENGTH_SHORT).show();
-                String code = morse_sql.get_item(view.getId());
-                Toast.makeText(morse_hz, code, Toast.LENGTH_SHORT).show();
-                morse_hz.add_MorseString(code);
-            }
-        });
-
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                longClk = 1;
+                morse_hz.ClearMorseList();
                 Toast.makeText(morse_hz, view.getId() + " LongItem", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), Add_Morse_item.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", view.getId());
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return false;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (longClk == 0) {
+                    Toast.makeText(morse_hz, String.valueOf(view.getId()), Toast.LENGTH_SHORT).show();
+                    String code = morse_sql.get_item_code(view.getId());
+                    Toast.makeText(morse_hz, code, Toast.LENGTH_SHORT).show();
+                    morse_hz.add_MorseString(code);
+                }
             }
         });
 
@@ -195,6 +207,7 @@ public class Morse_key extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+        longClk = 0;
         if (morse_sql.list_item() != null) {
             Myadaputa myadaputa = new Myadaputa(morse_sql.list_item());
             listView.setAdapter(myadaputa);
@@ -205,12 +218,14 @@ public class Morse_key extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
+        morse_hz.ClearMorseList();
     }
 
     @Override

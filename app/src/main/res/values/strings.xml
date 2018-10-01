@@ -8,6 +8,8 @@
     <string name="set_Backlight">Backlight</string>
     <string name="input_title">Item_name</string>
     <string name="input_code">MorseCode</string>
+    <string name="add_item_Save">Save</string>
+    <string name="add_item_Delete">Del</string>
 
 
 </resources>

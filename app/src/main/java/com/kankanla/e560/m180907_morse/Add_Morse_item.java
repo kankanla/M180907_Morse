@@ -1,5 +1,6 @@
 package com.kankanla.e560.m180907_morse;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -10,11 +11,13 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -28,17 +31,41 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
     private Point point;
     private EditText editText;
     private TextInputEditText textInputEditText;
+    private int item_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "###onCreate###");
         setContentView(R.layout.activity_add_morse_item);
         getSupportActionBar().hide();
         init();
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle == null) {
+            item_id = 0;
+        } else {
+            item_id = bundle.getInt("id");
+        }
+
         morse_sql = new Morse_SQL(this);
         textInputEditText = findViewById(R.id.TextInputEditText);
         editText = findViewById(R.id.editText_code);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+
+        if (item_id == 0) {
+
+        } else {
+            String[] temp = morse_sql.get_item(item_id);
+            for (String xxx : temp) {
+                Log.d(TAG, "----------" + xxx + "-----------");
+            }
+
+            editText.setText(temp[1]);
+            textInputEditText.setText(temp[0]);
+        }
 
         input_Fn8 = findViewById(R.id.input_Fn8);
         input_Fn8.setText("AR");
@@ -52,8 +79,16 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
         input_Fn6.setText("TU");
         input_Fn6.setOnClickListener(this);
 
+        input_Fn2 = findViewById(R.id.input_Fn2);
+        input_Fn2.setText(getString(R.string.add_item_Delete));
+        if (item_id == 0) {
+            input_Fn2.setEnabled(false);
+        } else {
+            input_Fn2.setEnabled(true);
+            input_Fn2.setOnClickListener(this);
+        }
         input_Fn1 = findViewById(R.id.input_Fn1);
-        input_Fn1.setText("ADDITE");
+        input_Fn1.setText(getString(R.string.add_item_Save));
         input_Fn1.setOnClickListener(this);
 
 
@@ -67,7 +102,6 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
                 }
             }
         };
-
 //        textInputEditText.setFilters(new InputFilter[]{inputFilter});
     }
 
@@ -78,7 +112,6 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
         display.getSize(point);
         GoogleAdmob();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -109,12 +142,31 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
                     xx.insert(temp, inputCode);
                 }
                 break;
+            case R.id.input_Fn2:
+                // delete item
+                if (item_id == 0) {
+                    Toast.makeText(this, "item_id == 0", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                editText.setText("");
+                textInputEditText.setText("");
+                morse_sql.del_temp(item_id);
+                Toast.makeText(this, "del--" + String.valueOf(item_id), Toast.LENGTH_SHORT).show();
+                this.finish();
+                break;
+
             case R.id.input_Fn1:
-                morse_sql.add_item(editText.getText(), textInputEditText.getText());
+                // save item
+                if (String.valueOf(editText.getText()).isEmpty()) {
+                    Toast.makeText(this, "Empty", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                morse_sql.add_item(editText.getText(), textInputEditText.getText(), item_id);
+                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+                this.finish();
                 break;
             default:
         }
-
     }
 
     protected void GoogleAdmob() {
@@ -134,6 +186,4 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
         RelativeLayout layout = findViewById(R.id.add_morse_item_admob);
         layout.addView(adView, -1, layoutParams);
     }
-
-
 }

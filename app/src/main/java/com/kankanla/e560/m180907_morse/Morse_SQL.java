@@ -21,16 +21,54 @@ public class Morse_SQL {
         sql_db = new SQL_DB(context, DB_NAME, null, DB_VERSION);
     }
 
-    public void add_item(Editable title, Editable CODE) {
+    public int del_temp(int id) {
+        Log.d(TAG, "del_temp");
+        if (find_item_id(id) == null) {
+            return 0;
+        }
+        SQLiteDatabase db = sql_db.getWritableDatabase();
+        String del_item = "delete from main where id = ?";
+        Cursor cursor = db.rawQuery(del_item, new String[]{String.valueOf(id)});
+        int temp = cursor.getCount();
+        cursor.close();
+        db.close();
+        return temp;
+
+    }
+
+    public String find_item_id(int id) {
+        Log.d(TAG, "find_item_id");
+        SQLiteDatabase db = sql_db.getReadableDatabase();
+        String find_item_db = "select id from main where id = ?";
+        Cursor cursor = db.rawQuery(find_item_db, new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
+        String item_id = cursor.getString(cursor.getColumnIndex("id"));
+        cursor.close();
+        db.close();
+        if (item_id == null) {
+            return null;
+        } else {
+            return item_id;
+        }
+    }
+
+    public void add_item(Editable title, Editable CODE, int id) {
         Log.d(TAG, "add_item");
         SQLiteDatabase db = sql_db.getWritableDatabase();
         String stime = String.valueOf(System.currentTimeMillis());
-        String cmd = "insert into main (title,code,create_time)values(?,?,?)";
-        db.execSQL(cmd, new String[]{String.valueOf(title), String.valueOf(CODE), stime});
+        String temp;
+        if (id == 0) {
+            temp = "insert into main (title,code,create_time)values(?,?,?)";
+            db.execSQL(temp, new String[]{String.valueOf(title), String.valueOf(CODE), stime});
+        } else {
+            temp = "update main set title = ? ,code = ? where id = ?";
+            db.execSQL(temp, new String[]{String.valueOf(title), String.valueOf(CODE), String.valueOf(id)});
+        }
+
         db.close();
     }
 
-    public String get_item(int id) {
+    public String get_item_code(int id) {
         Log.d(TAG, "get_item");
         SQLiteDatabase db = sql_db.getReadableDatabase();
         String cmd = "select code from main where id = ?";
@@ -41,6 +79,22 @@ public class Morse_SQL {
         cursor.close();
         return code;
     }
+
+    public String[] get_item(int id) {
+        Log.d(TAG, "get_item");
+        SQLiteDatabase db = sql_db.getReadableDatabase();
+        String cmd = "select title,code from main where id = ?";
+        Cursor cursor = db.rawQuery(cmd, new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
+        String[] temp = new String[]{
+                cursor.getString(cursor.getColumnIndex("code")),
+                cursor.getString(cursor.getColumnIndex("title"))
+        };
+        db.close();
+        cursor.close();
+        return temp;
+    }
+
 
     public Cursor list_item() {
         Log.d(TAG, "list_item");
@@ -67,7 +121,6 @@ public class Morse_SQL {
                     "acccond integer default 0," +
                     "active text default 1 )";
             db.execSQL(create_db);
-
         }
 
         @Override
