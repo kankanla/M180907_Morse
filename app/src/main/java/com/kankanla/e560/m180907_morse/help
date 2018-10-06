@@ -1,0 +1,20 @@
+
+
+help
+SharedPreferences
+
+shared = getSharedPreferences("APP_SET", MODE_PRIVATE);
+editor.putInt("displayWidth", point.x);
+editor.putInt("displayHeight", point.y);
+
+sw1.setChecked(shared.getBoolean("sw1", true));
+sw2.setChecked(shared.getBoolean("sw2", true));
+
+
+Morse_Set.java
+shared = getSharedPreferences("APP_SET", MODE_PRIVATE);
+SharedPreferences.Editor editor = shared.edit();
+editor.putString(FnKey, (String) t3.getText());
+FnKey Fn3,Fn4,Fn5,Fn6,Fn7,Fn8
+
+shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun1))).commit();;

@@ -2,14 +2,35 @@
     <string name="app_name">M180907_Morse</string>
     <string name="Morse_key">Morse_key</string>
     <string name="Morse_Code">Morse_Code</string>
+    <string name="Morse_Set">Settings</string>
     <string name="Morse_Game">Morse_Game</string>
     <string name="set_sound">Sound</string>
     <string name="set_Light">Light</string>
     <string name="set_Backlight">Backlight</string>
     <string name="input_title">Item_name</string>
+    <string name="input_title_empt">Title is emptiness</string>
     <string name="input_code">MorseCode</string>
     <string name="add_item_Save">Save</string>
     <string name="add_item_Delete">Del</string>
+    <string name="set_FnKey">FunKey</string>
+    <string name="set_FnKey_name">Key_name</string>
+    <string name="set_FnKey_Code">-.-. --.-</string>
+    <string name="set_key1">.</string>
+    <string name="set_key2">-</string>
+    <string name="set_key11">dit</string>
+    <string name="set_key22">dah</string>
+    <string name="set_key3">cls</string>
+    <string name="Fn1">Fn1</string>
+    <string name="Fn2">Fn2</string>
+    <string name="Fn3">Fn3</string>
+    <string name="Fn4">Fn4</string>
+    <string name="Fn5">Fn5</string>
+    <string name="Fn6">Fn6</string>
+    <string name="Fn7">Fn7</string>
+    <string name="Fn8">Fn8</string>
+    <string name="set_sun1">800</string>
+    <string name="set_sun2">600</string>
+    <string name="set_sun3">400</string>
 
 
 </resources>

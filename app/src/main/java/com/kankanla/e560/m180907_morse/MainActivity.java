@@ -32,12 +32,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonA.setOnClickListener(this);
 
         buttonB = findViewById(R.id.button2);
-        buttonB.setText(getString(R.string.Morse_Code));
+        buttonB.setText(getString(R.string.Morse_Set));
         buttonB.setOnClickListener(this);
 
         buttonC = findViewById(R.id.button3);
         buttonC.setText(getString(R.string.Morse_Game));
         buttonC.setOnClickListener(this);
+        buttonC.setEnabled(false);
 
         imageView = findViewById(R.id.imageView2);
 
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.button2:
-                intent = new Intent(this, Morse_Sound.class);
+                intent = new Intent(this, Morse_Set.class);
                 startActivity(intent);
                 break;
             case R.id.button3:

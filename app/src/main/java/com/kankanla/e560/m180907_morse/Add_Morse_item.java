@@ -1,6 +1,7 @@
 package com.kankanla.e560.m180907_morse;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
     private Point point;
     private EditText editText;
     private TextInputEditText textInputEditText;
+    private SharedPreferences shared;
     private int item_id;
 
     @Override
@@ -68,16 +70,28 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
         }
 
         input_Fn8 = findViewById(R.id.input_Fn8);
-        input_Fn8.setText("AR");
+        input_Fn8.setText(getString(R.string.Fn8));
         input_Fn8.setOnClickListener(this);
 
         input_Fn7 = findViewById(R.id.input_Fn7);
-        input_Fn7.setText("RPT");
+        input_Fn7.setText(getString(R.string.Fn7));
         input_Fn7.setOnClickListener(this);
 
         input_Fn6 = findViewById(R.id.input_Fn6);
-        input_Fn6.setText("TU");
+        input_Fn6.setText(getString(R.string.Fn6));
         input_Fn6.setOnClickListener(this);
+
+        input_Fn5 = findViewById(R.id.input_Fn5);
+        input_Fn5.setText(getString(R.string.Fn5));
+        input_Fn5.setOnClickListener(this);
+
+        input_Fn4 = findViewById(R.id.input_Fn4);
+        input_Fn4.setText(getString(R.string.Fn4));
+        input_Fn4.setOnClickListener(this);
+
+        input_Fn3 = findViewById(R.id.input_Fn3);
+        input_Fn3.setText(getString(R.string.Fn3));
+        input_Fn3.setOnClickListener(this);
 
         input_Fn2 = findViewById(R.id.input_Fn2);
         input_Fn2.setText(getString(R.string.add_item_Delete));
@@ -107,6 +121,7 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
 
     protected void init() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        shared = getSharedPreferences("APP_SET", MODE_PRIVATE);
         point = new Point();
         Display display = getWindowManager().getDefaultDisplay();
         display.getSize(point);
@@ -115,33 +130,49 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        Button button = (Button) v;
+        String incode = null;
+        Editable editable = null;
+        int temp = 0;
         switch (v.getId()) {
             case R.id.TextInputEditText:
                 break;
-            case R.id.input_Fn8:
-                if (textInputEditText.isFocused()) {
-                    String inputCode = ".-.-."; //AR送信終了
-                    Editable xx = textInputEditText.getText();
-                    int temp = textInputEditText.getSelectionStart();
-                    xx.insert(temp, inputCode);
+//            case R.id.input_Fn8:
+//                if (textInputEditText.isFocused()) {
+//                    String inputCode = ".-.-."; //AR送信終了
+//                    Editable xx = textInputEditText.getText();
+//                    int temp = textInputEditText.getSelectionStart();
+//                    xx.insert(temp, inputCode);
+//                }
+//                break;
+//            case R.id.input_Fn7:
+//                if (textInputEditText.isFocused()) {
+//                    String inputCode = ".-.-.--.-"; //RPT送信終了
+//                    Editable xx = textInputEditText.getText();
+//                    int temp = textInputEditText.getSelectionStart();
+//                    xx.insert(temp, inputCode);
+//                }
+//                break;
+//            case R.id.input_Fn6:
+//                if (textInputEditText.isFocused()) {
+//                    String inputCode = "-..-"; //TU送信終了
+//                    Editable xx = textInputEditText.getText();
+//                    int temp = textInputEditText.getSelectionStart();
+//                    xx.insert(temp, inputCode);
+//                }
+//                break;
+
+            case R.id.input_Fn1:
+                // save item
+                if (String.valueOf(editText.getText()).isEmpty()) {
+                    Toast.makeText(this, getString(R.string.input_title_empt), Toast.LENGTH_SHORT).show();
+                    break;
                 }
+                morse_sql.add_item(editText.getText(), textInputEditText.getText(), item_id);
+                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+                this.finish();
                 break;
-            case R.id.input_Fn7:
-                if (textInputEditText.isFocused()) {
-                    String inputCode = ".-.-.--.-"; //RPT送信終了
-                    Editable xx = textInputEditText.getText();
-                    int temp = textInputEditText.getSelectionStart();
-                    xx.insert(temp, inputCode);
-                }
-                break;
-            case R.id.input_Fn6:
-                if (textInputEditText.isFocused()) {
-                    String inputCode = "-..-"; //TU送信終了
-                    Editable xx = textInputEditText.getText();
-                    int temp = textInputEditText.getSelectionStart();
-                    xx.insert(temp, inputCode);
-                }
-                break;
+
             case R.id.input_Fn2:
                 // delete item
                 if (item_id == 0) {
@@ -155,17 +186,71 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
                 this.finish();
                 break;
 
-            case R.id.input_Fn1:
-                // save item
-                if (String.valueOf(editText.getText()).isEmpty()) {
-                    Toast.makeText(this, "Empty", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                morse_sql.add_item(editText.getText(), textInputEditText.getText(), item_id);
-                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
-                this.finish();
+            case R.id.input_Fn3:
+//                了解 ••• ― •
+//                訂正(HH) ••••••••
+//                送信開始(BT) ― ••• ―
+//                送信終了(AR) • ― • ― •
+//                通信終了(VA) ••• ― • ―
+//                送信要求(K) ― • ―
+//                待機要求(AS) • ― •••
+
+                //送信開始(BT) ― ••• ―
+                incode = shared.getString((String) button.getText(), "-...-");
+                editable = textInputEditText.getText();
+                temp = textInputEditText.getSelectionStart();
+                editable.insert(temp, incode);
                 break;
+
+            case R.id.input_Fn4:
+                //送信終了(AR) • ― • ― •
+                incode = shared.getString((String) button.getText(), ".-.-.");
+                editable = textInputEditText.getText();
+                temp = textInputEditText.getSelectionStart();
+                editable.insert(temp, incode);
+                break;
+
+            case R.id.input_Fn5:
+//                通信終了(VA) ••• ― • ―
+                incode = shared.getString((String) button.getText(), "...-.-");
+                editable = textInputEditText.getText();
+                temp = textInputEditText.getSelectionStart();
+                editable.insert(temp, incode);
+                break;
+
+            case R.id.input_Fn6:
+//                送信要求(K) ― • ―
+                incode = shared.getString((String) button.getText(), "-.-");
+                editable = textInputEditText.getText();
+                temp = textInputEditText.getSelectionStart();
+                editable.insert(temp, incode);
+                break;
+
+            case R.id.input_Fn7:
+//                待機要求(AS) • ― •••
+                incode = shared.getString((String) button.getText(), ".-...");
+                editable = textInputEditText.getText();
+                temp = textInputEditText.getSelectionStart();
+                editable.insert(temp, incode);
+                break;
+
+            case R.id.input_Fn8:
+//                73 ― ― ••• ••• ― ―
+                incode = shared.getString((String) button.getText(), "--... ...--");
+                editable = textInputEditText.getText();
+                temp = textInputEditText.getSelectionStart();
+                editable.insert(temp, incode);
+                break;
+
+//            Button button = (Button) v;
+//            String inputCode2 = (String) button.getText();
+//            String inputCode = shared.getString(inputCode2, "--.-");
+//            Editable xx = textInputEditText.getText();
+//            int temp = textInputEditText.getSelectionStart();
+//            xx.insert(temp, inputCode);
+
             default:
+
         }
     }
 

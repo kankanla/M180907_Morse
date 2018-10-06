@@ -25,9 +25,11 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class Morse_key extends AppCompatActivity {
     private final String TAG = "###Morse_key###";
 
     private Button button1, button2, button4;
+    private Switch sw1, sw2;
     private TextView textView;
     private Morse_HZ morse_hz;
     private ListView listView;
@@ -64,13 +67,33 @@ public class Morse_key extends AppCompatActivity {
         textView = findViewById(R.id.cqcq);
         listView = findViewById(R.id.morselist);
 
+        sw1 = findViewById(R.id.sw_Ligth);
+        sw2 = findViewById(R.id.sw_Sound);
         l1 = findViewById(R.id.l1);
         l2 = findViewById(R.id.l2);
         l3 = findViewById(R.id.l3);
 
+        sw1.setChecked(shared.getBoolean("sw1", true));
+        sw2.setChecked(shared.getBoolean("sw2", true));
+
+        sw1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                shared.edit().putBoolean("sw1", isChecked).commit();
+            }
+        });
+
+        sw2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                shared.edit().putBoolean("sw2", isChecked).commit();
+            }
+        });
+
+
 //        testonly
-        viewTreeObserver = l3.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
+//        viewTreeObserver = l3.getViewTreeObserver();
+//        viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
 
         if (shared.getInt("layout2_Height", 0) == 0 || shared.getInt("displayHeight", 0) != point.y) {
             viewTreeObserver = l3.getViewTreeObserver();
@@ -200,7 +223,6 @@ public class Morse_key extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
@@ -217,8 +239,6 @@ public class Morse_key extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-
-
     }
 
     @Override
@@ -244,7 +264,6 @@ public class Morse_key extends AppCompatActivity {
         Log.d(TAG, "init");
         // Keep screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-//      // Keep screen off
 //      getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         WindowManager.LayoutParams lp = getWindow().getAttributes();
@@ -262,6 +281,7 @@ public class Morse_key extends AppCompatActivity {
             Morse_HZ.LocalBinder binder = (Morse_HZ.LocalBinder) service;
             morse_hz = binder.getService();
             morse_hz.setTextView(textView);
+            morse_hz.setHz(shared.getInt("HZ", 600));
             morse_hz.loop_play();
         }
 
@@ -270,7 +290,6 @@ public class Morse_key extends AppCompatActivity {
             unbindService(this);
         }
     };
-
 
     class Myadaputa extends BaseAdapter {
         private Cursor cursor;
@@ -310,9 +329,7 @@ public class Morse_key extends AppCompatActivity {
             list_t.setText(cursor.getString(cursor.getColumnIndex("title")));
             list_c.setText(cursor.getString(cursor.getColumnIndex("acccond")));
             list_c.setText("");
-
             convertView.setId(cursor.getInt(cursor.getColumnIndex("id")));
-
             return convertView;
         }
     }

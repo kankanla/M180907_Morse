@@ -43,22 +43,16 @@
                     android:orientation="vertical">
 
                     <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contextClickable="true"
+                        android:id="@+id/sw_Sound"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
                         android:text="@string/set_sound" />
 
                     <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contextClickable="true"
+                        android:id="@+id/sw_Ligth"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
                         android:text="@string/set_Light" />
-
-                    <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contextClickable="true"
-                        android:text="@string/set_Backlight" />
 
                 </LinearLayout>
 
@@ -124,8 +118,8 @@
                     android:id="@+id/buttonkey2"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginEnd="22dp" />
 
 

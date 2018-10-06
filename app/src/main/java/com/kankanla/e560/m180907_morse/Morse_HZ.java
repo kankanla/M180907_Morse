@@ -2,6 +2,7 @@ package com.kankanla.e560.m180907_morse;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -28,6 +29,7 @@ public class Morse_HZ extends Service {
     private List<Character> morseList = new ArrayList<>();
     private int Beeppling = 0;
     private int sampleRate = 44100;
+    private int hz;
     private int flag = 0;
     private TextView textView;
     private int baseSpeed = 70;
@@ -35,6 +37,7 @@ public class Morse_HZ extends Service {
     private byte[] beep_on, beep_off;
     private Semaphore semaphore = new Semaphore(1);
     private HashMap<String, String> CODE = new HashMap<>();
+    private SharedPreferences shared;
 
     public Morse_HZ() {
         Log.d(TAG, "Morse_HZ");
@@ -42,6 +45,7 @@ public class Morse_HZ extends Service {
 
     {
         CODE.put("-", "-");
+        CODE.put("‐", "-");
         CODE.put("・", "・");
         CODE.put(".", "・");
 
@@ -325,6 +329,10 @@ public class Morse_HZ extends Service {
         this.sampleRate = sampleRate;
     }
 
+    public void setHz(int hz) {
+        this.hz = hz;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void Beep_OFF() {
         audioTrack.setVolume(0.0f);
@@ -362,7 +370,7 @@ public class Morse_HZ extends Service {
                             AudioTrack.MODE_STREAM
                     );
 
-                    beep_size = sampleRate / 300 / 2;
+                    beep_size = sampleRate / hz / 2;
 
                     beep_on = new byte[sampleRate];
                     beep_off = new byte[sampleRate];
@@ -370,7 +378,7 @@ public class Morse_HZ extends Service {
                         if (i % 3 == 0) {
                             beep_on[i] = 127;
                         } else {
-                            beep_on[i] = 80;
+                            beep_on[i] = 120;
                         }
                         beep_off[i] = 0;
                     }

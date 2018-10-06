@@ -24,7 +24,8 @@
             android:exported="false" />
 
         <activity android:name=".Add_Morse_item" />
-        <activity android:name=".Morse_Sound"></activity>
+        <activity android:name=".Morse_Sound" />
+        <activity android:name=".Morse_Set"></activity>
     </application>
 
 </manifest>
