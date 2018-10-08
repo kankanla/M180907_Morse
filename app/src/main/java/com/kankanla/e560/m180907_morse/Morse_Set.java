@@ -39,13 +39,13 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
     protected void onStart() {
         super.onStart();
         son1 = findViewById(R.id.son1);
-        son1.setText(getString(R.string.set_sun1));
+        son1.setText(getString(R.string.set_sun1) + "Hz");
         son1.setOnClickListener(this);
         son2 = findViewById(R.id.son2);
-        son2.setText(getString(R.string.set_sun2));
+        son2.setText(getString(R.string.set_sun2) + "Hz");
         son2.setOnClickListener(this);
         son3 = findViewById(R.id.son3);
-        son3.setText(getString(R.string.set_sun3));
+        son3.setText(getString(R.string.set_sun3) + "Hz");
         son3.setOnClickListener(this);
 
         fn3 = findViewById(R.id.Fn3);
@@ -223,11 +223,11 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
 
     protected void GoogleAdmob() {
         AdView adView = new AdView(this);
-        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+//        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
         adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
 //        adView.setAdSize(AdSize.BANNER);
-        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);

@@ -4,12 +4,19 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        GoogleAdmob();
 
         buttonA = findViewById(R.id.button1);
         buttonA.setText(getString(R.string.Morse_key));
@@ -105,5 +113,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    protected void GoogleAdmob() {
+        AdView adView = new AdView(this);
+//        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+
+        adView.setAdSize(AdSize.BANNER);
+        adView.setAdUnitId(getString(R.string.admob_1));
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        LinearLayout layout = findViewById(R.id.main_admob);
+        layout.addView(adView, -1, layoutParams);
     }
 }

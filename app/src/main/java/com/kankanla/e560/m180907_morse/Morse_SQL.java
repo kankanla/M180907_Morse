@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.Editable;
 import android.util.Log;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Morse_SQL {
     private final String TAG = "###Morse_SQL###";
     private Context context;
@@ -33,7 +36,6 @@ public class Morse_SQL {
         cursor.close();
         db.close();
         return temp;
-
     }
 
     public String find_item_id(int id) {
@@ -64,7 +66,6 @@ public class Morse_SQL {
             temp = "update main set title = ? ,code = ? where id = ?";
             db.execSQL(temp, new String[]{String.valueOf(title), String.valueOf(CODE), String.valueOf(id)});
         }
-
         db.close();
     }
 
@@ -95,12 +96,36 @@ public class Morse_SQL {
         return temp;
     }
 
+    public void add_QRA() {
+        HashMap<String, String> temp = new HashMap<>();
+        temp.put("MyCQCQ", "CQCQCQ DE JAPAN");
+        temp.put("QRA", "QRA");
+        temp.put("QRB", "QRB");
+        temp.put("QRK5", "QRK5");
+        temp.put("QRM5", "QRM5");
+
+        SQLiteDatabase db = sql_db.getWritableDatabase();
+        String cmd = "select id from main";
+        Cursor cursor = db.rawQuery(cmd, new String[]{});
+        String cmd2 = "insert into main (title,code,create_time) values(?,?,?)";
+        if (cursor.getCount() == 0) {
+            for (Map.Entry<String, String> key : temp.entrySet()) {
+                String stime = String.valueOf(System.currentTimeMillis());
+                db.execSQL(cmd2, new String[]{key.getKey(), key.getValue(), stime});
+            }
+        }
+        db.close();
+    }
+
 
     public Cursor list_item() {
         Log.d(TAG, "list_item");
         SQLiteDatabase db = sql_db.getReadableDatabase();
         String cmd = "select * from main order by id desc";
         Cursor cursor = db.rawQuery(cmd, null);
+        if (cursor.getCount() == 0) {
+            add_QRA();
+        }
         return cursor;
     }
 

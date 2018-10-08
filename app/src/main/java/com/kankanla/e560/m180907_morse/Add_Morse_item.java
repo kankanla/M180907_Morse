@@ -182,7 +182,7 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
                 editText.setText("");
                 textInputEditText.setText("");
                 morse_sql.del_temp(item_id);
-                Toast.makeText(this, "del--" + String.valueOf(item_id), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "del--" + String.valueOf(item_id), Toast.LENGTH_SHORT).show();
                 this.finish();
                 break;
 
@@ -256,10 +256,10 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
 
     protected void GoogleAdmob() {
         AdView adView = new AdView(this);
-        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+//        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
         adView.setAdSize(AdSize.BANNER);
-        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);

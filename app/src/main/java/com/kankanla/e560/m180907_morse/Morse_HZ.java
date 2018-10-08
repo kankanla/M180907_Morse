@@ -31,6 +31,8 @@ public class Morse_HZ extends Service {
     private int sampleRate = 44100;
     private int hz;
     private int flag = 0;
+    private boolean soundflag = true;
+    private boolean ligthflag = true;
     private TextView textView;
     private int baseSpeed = 70;
     private int beep_size = 0;
@@ -46,86 +48,94 @@ public class Morse_HZ extends Service {
     {
         CODE.put("-", "-");
         CODE.put("‐", "-");
-        CODE.put("・", "・");
         CODE.put(".", "・");
-
+        CODE.put("・", ".");
         CODE.put(" ", " ");
-        CODE.put("A", "・-");
-        CODE.put("B", "-・・");
-        CODE.put("C", "-・-・");
-        CODE.put("D", "--・");
-        CODE.put("E", "・");
-        CODE.put("F", "・・-・");
-        CODE.put("G", "--・");
-        CODE.put("H", "・・・・");
-        CODE.put("I", "・・");
+
+        CODE.put("A", ".-");
+        CODE.put("B", "-...");
+        CODE.put("C", "-.-.");
+        CODE.put("D", "-..");
+        CODE.put("E", ".");
+        CODE.put("F", "..-.");
+        CODE.put("G", "--.");
+        CODE.put("H", "....");
+        CODE.put("I", "..");
         CODE.put("J", ".---");
-        CODE.put("K", ".-・");
-        CODE.put("L", "--・-");
+        CODE.put("K", "-.-");
+        CODE.put("L", ".-..");
         CODE.put("M", "--");
-        CODE.put("N", "-・");
+        CODE.put("N", "-.");
         CODE.put("O", "---");
-        CODE.put("P", "・--・");
-        CODE.put("Q", "--・-");
-        CODE.put("R", "-・-");
+        CODE.put("P", ".--.");
+        CODE.put("Q", "--.-");
+        CODE.put("R", ".-.");
         CODE.put("S", "---");
         CODE.put("T", "-");
-        CODE.put("U", "・・-");
-        CODE.put("V", "・・・-");
-        CODE.put("W", "・--");
-        CODE.put("X", "-・・-");
-        CODE.put("Y", "-・--");
-        CODE.put("Z", "--・・");
-        CODE.put("a", "・-");
-        CODE.put("b", "-・・");
-        CODE.put("c", "-・-・");
-        CODE.put("d", "--・");
-        CODE.put("e", "・");
-        CODE.put("f", "・・-・");
-        CODE.put("g", "--・");
-        CODE.put("h", "・・・・");
-        CODE.put("i", "・・");
-        CODE.put("j", "・---");
-        CODE.put("k", "・-・");
-        CODE.put("l", "--・-");
+        CODE.put("U", "..-");
+        CODE.put("V", "...-");
+        CODE.put("W", ".--");
+        CODE.put("X", "-..-");
+        CODE.put("Y", "-.--");
+        CODE.put("Z", "--..");
+        CODE.put("a", ".-");
+        CODE.put("b", "-...");
+        CODE.put("c", "-.-.");
+        CODE.put("d", "-..");
+        CODE.put("e", ".");
+        CODE.put("f", "..-.");
+        CODE.put("g", "--.");
+        CODE.put("h", "....");
+        CODE.put("i", "..");
+        CODE.put("j", ".---");
+        CODE.put("k", "-.-");
+        CODE.put("l", ".-..");
         CODE.put("m", "--");
-        CODE.put("n", "-・");
+        CODE.put("n", "-.");
         CODE.put("o", "---");
-        CODE.put("p", "・--・");
-        CODE.put("q", "--・-");
-        CODE.put("r", "-・-");
-        CODE.put("s", "---");
+        CODE.put("p", ".--.");
+        CODE.put("q", "--.-");
+        CODE.put("r", ".-.");
+        CODE.put("s", "...");
         CODE.put("t", "-");
-        CODE.put("u", "・・-");
-        CODE.put("v", "・・・-");
-        CODE.put("w", "・--");
-        CODE.put("x", "-・・-");
-        CODE.put("y", "-・--");
-        CODE.put("z", "--・・");
+        CODE.put("u", "..-");
+        CODE.put("v", "...-");
+        CODE.put("w", ".--");
+        CODE.put("x", "-..-");
+        CODE.put("y", "-.--");
+        CODE.put("z", "--..");
 
-        CODE.put("1", "・----");
-        CODE.put("2", "・・---");
-        CODE.put("3", "・・・--");
-        CODE.put("4", "・・・・-");
-        CODE.put("5", "・・・・・");
-        CODE.put("6", "-・・・・");
-        CODE.put("7", "--・・・");
-        CODE.put("8", "---・・");
-        CODE.put("9", "----・");
+        CODE.put("1", ".----");
+        CODE.put("2", "..---");
+        CODE.put("3", "...--");
+        CODE.put("4", "....-");
+        CODE.put("5", ".....");
+        CODE.put("6", "-....");
+        CODE.put("7", "--...");
+        CODE.put("8", "---..");
+        CODE.put("9", "----.");
         CODE.put("0", "-----");
 
-        CODE.put(",", "--・・--");
-        CODE.put("?", "・・--・・");
-        CODE.put("!", "-・-・--");
-        CODE.put("/", "-・・-・");
-        CODE.put("@", "・--・-・");
-        CODE.put("(", "-・--・");
-        CODE.put(")", "-・--・-");
+        CODE.put(",", "--..--");
+        CODE.put("?", "..--..");
+        CODE.put("!", "-.-.--");
+        CODE.put("/", "-..-.");
+        CODE.put("@", ".--.-.");
+        CODE.put("(", "-.--.");
+        CODE.put(")", "-.--.-");
     }
 
     public void setTextView(TextView textView) {
         Log.d(TAG, "setTextView");
         this.textView = textView;
+    }
+
+    public void setSoundflag(boolean soundflag) {
+        this.soundflag = soundflag;
+    }
+
+    public void setLigthflag(boolean ligthflag) {
+        this.ligthflag = ligthflag;
     }
 
     public void add_MorseString(String string) {
@@ -229,6 +239,24 @@ public class Morse_HZ extends Service {
                                 });
                                 Thread.sleep(baseSpeed * 1);
                                 break;
+                            case '.':
+                                Beep_ON();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.WHITE);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                Beep_OFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackgroundColor(Color.BLACK);
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                break;
                             default:
                                 break;
                         }
@@ -310,6 +338,24 @@ public class Morse_HZ extends Service {
                                 });
                                 Thread.sleep(baseSpeed * 1);
                                 break;
+                            case '.':
+                                Beep_ON();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackground(getDrawable(R.drawable.out_window2));
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                Beep_OFF();
+                                textView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textView.setBackground(getDrawable(R.drawable.out_window));
+                                    }
+                                });
+                                Thread.sleep(baseSpeed * 1);
+                                break;
                             default:
                                 break;
                         }
@@ -371,7 +417,6 @@ public class Morse_HZ extends Service {
                     );
 
                     beep_size = sampleRate / hz / 2;
-
                     beep_on = new byte[sampleRate];
                     beep_off = new byte[sampleRate];
                     for (int i = 0; i < sampleRate; i++) {
@@ -383,12 +428,15 @@ public class Morse_HZ extends Service {
                         beep_off[i] = 0;
                     }
 
-
                     while (true) {
-                        audioTrack.write(beep_on, 0, beep_size);
-                        audioTrack.write(beep_off, 0, beep_size);
-                        if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
-                            audioTrack.play();
+                        if (soundflag) {
+                            audioTrack.write(beep_on, 0, beep_size);
+                            audioTrack.write(beep_off, 0, beep_size);
+                            if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
+                                audioTrack.play();
+                                audioTrack.setVolume(0.0f);
+                            }
+                        } else {
                             audioTrack.setVolume(0.0f);
                         }
                     }

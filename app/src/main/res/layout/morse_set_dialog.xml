@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <LinearLayout
         android:id="@+id/dialogLinear"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/morse_set_dialogT1"
@@ -29,37 +31,40 @@
             android:id="@+id/morse_set_dialogT3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22dp" />
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/morse_set_dialogB3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="12dp"
+                android:background="@drawable/dutu_key"
+                android:text="@string/set_key3" />
+
+
+            <Button
+                android:id="@+id/morse_set_dialogB1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="12dp"
+                android:background="@drawable/dutu_key"
+                android:text="@string/set_key11" />
+
+            <Button
+                android:id="@+id/morse_set_dialogB2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="12dp"
+                android:background="@drawable/dutu_key"
+                android:text="@string/set_key22" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/morse_set_dialogB1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="12dp"
-            android:background="@drawable/dutu_key"
-            android:text="@string/set_key11" />
-
-        <Button
-            android:id="@+id/morse_set_dialogB2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="12dp"
-            android:background="@drawable/dutu_key"
-            android:text="@string/set_key22" />
-
-        <Button
-            android:id="@+id/morse_set_dialogB3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="12dp"
-            android:background="@drawable/dutu_key"
-            android:text="@string/set_key3" />
-    </LinearLayout>
 </LinearLayout>

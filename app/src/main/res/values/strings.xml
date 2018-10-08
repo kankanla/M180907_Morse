@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">M180907_Morse</string>
+    <string name="app_name">Morse Trainer</string>
+    <string name="app_name2">M180907_Morse</string>
     <string name="Morse_key">Morse_key</string>
     <string name="Morse_Code">Morse_Code</string>
     <string name="Morse_Set">Settings</string>
@@ -8,6 +9,9 @@
     <string name="set_Light">Light</string>
     <string name="set_Backlight">Backlight</string>
     <string name="input_title">Item_name</string>
+    <string name="input_nitem">Add Item</string>
+    <string name="input_bigKey">KEY</string>
+    <string name="input_bigKey2">MemoryKey</string>
     <string name="input_title_empt">Title is emptiness</string>
     <string name="input_code">MorseCode</string>
     <string name="add_item_Save">Save</string>
@@ -20,6 +24,7 @@
     <string name="set_key11">dit</string>
     <string name="set_key22">dah</string>
     <string name="set_key3">cls</string>
+    <string name="set_key4">sav</string>
     <string name="Fn1">Fn1</string>
     <string name="Fn2">Fn2</string>
     <string name="Fn3">Fn3</string>
@@ -31,6 +36,10 @@
     <string name="set_sun1">800</string>
     <string name="set_sun2">600</string>
     <string name="set_sun3">400</string>
+    <string name="admob_1">ca-app-pub-0547405774182700/4487579851</string>
+    <string name="admob_2">ca-app-pub-0547405774182700/2097220230</string>
+    <string name="admob_3">ca-app-pub-0547405774182700/8353553115</string>
+    <string name="admob_app_id">ca-app-pub-0547405774182700~1689848511</string>
 
 
 </resources>

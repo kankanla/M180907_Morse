@@ -50,6 +50,7 @@ public class Morse_key extends AppCompatActivity {
     private LinearLayout l1, l2, l3;
     private ViewTreeObserver viewTreeObserver;
     private SharedPreferences shared;
+    private String codetemp = null;
     private int longClk = 0;
 
     @Override
@@ -80,6 +81,9 @@ public class Morse_key extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 shared.edit().putBoolean("sw1", isChecked).commit();
+                morse_hz.setLigthflag(isChecked);
+                textView.setEnabled(isChecked);
+
             }
         });
 
@@ -87,6 +91,7 @@ public class Morse_key extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 shared.edit().putBoolean("sw2", isChecked).commit();
+                morse_hz.setSoundflag(isChecked);
             }
         });
 
@@ -177,8 +182,9 @@ public class Morse_key extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (morse_hz != null) {
-                    morse_hz.Test();
-                    morse_hz.add_MorseString("-.-. --.- -.-. --.- CQ CQ cq cq");
+                    if (codetemp != null) {
+                        morse_hz.add_MorseString(codetemp);
+                    }
                 } else {
                     Log.d(TAG, "morse_hz == null");
                     return;
@@ -201,7 +207,6 @@ public class Morse_key extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 longClk = 1;
                 morse_hz.ClearMorseList();
-                Toast.makeText(morse_hz, view.getId() + " LongItem", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), Add_Morse_item.class);
                 Bundle bundle = new Bundle();
@@ -216,8 +221,8 @@ public class Morse_key extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (longClk == 0) {
-                    Toast.makeText(morse_hz, String.valueOf(view.getId()), Toast.LENGTH_SHORT).show();
                     String code = morse_sql.get_item_code(view.getId());
+                    codetemp = code;
                     Toast.makeText(morse_hz, code, Toast.LENGTH_SHORT).show();
                     morse_hz.add_MorseString(code);
                 }
@@ -275,6 +280,7 @@ public class Morse_key extends AppCompatActivity {
         display.getSize(point);
     }
 
+
     public ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -282,6 +288,8 @@ public class Morse_key extends AppCompatActivity {
             morse_hz = binder.getService();
             morse_hz.setTextView(textView);
             morse_hz.setHz(shared.getInt("HZ", 600));
+            morse_hz.setSoundflag(shared.getBoolean("sw2", true));
+            morse_hz.setLigthflag(shared.getBoolean("sw1", true));
             morse_hz.loop_play();
         }
 
@@ -336,10 +344,10 @@ public class Morse_key extends AppCompatActivity {
 
     protected void GoogleAdmob() {
         AdView adView = new AdView(this);
-        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+//        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
         adView.setAdSize(AdSize.BANNER);
-        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
