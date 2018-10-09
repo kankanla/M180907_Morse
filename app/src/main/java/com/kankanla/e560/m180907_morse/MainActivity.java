@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -122,8 +121,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adView.setAdSize(AdSize.BANNER);
         adView.setAdUnitId(getString(R.string.admob_1));
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        AdRequest.Builder adRequest = new AdRequest.Builder();
+        adRequest.addTestDevice("7026FA2EC1DC7E60FBEA02C64D33BD8B");
+        adRequest.addTestDevice("53185CF5BFA5B2121DF7FA86E7064C22");
+        adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
