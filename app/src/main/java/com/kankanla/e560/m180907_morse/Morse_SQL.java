@@ -19,7 +19,6 @@ public class Morse_SQL {
 
     public Morse_SQL(Context context) {
         Log.d(TAG, "add_item");
-        Log.d(getClass().getName(), "333");
         this.context = context;
         sql_db = new SQL_DB(context, DB_NAME, null, DB_VERSION);
     }
