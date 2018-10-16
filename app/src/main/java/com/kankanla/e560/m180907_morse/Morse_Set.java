@@ -8,7 +8,6 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
@@ -32,7 +31,6 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morse__set);
         init();
-        GoogleAdmob();
     }
 
     @Override
@@ -71,6 +69,9 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
+        if (shared.getInt("admobe", 0) > 10) {
+            GoogleAdmob();
+        }
     }
 
     protected void init() {
@@ -83,7 +84,7 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
         SharedPreferences.Editor editor = shared.edit();
         editor.putInt("displayWidth", point.x);
         editor.putInt("displayHeight", point.y);
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -121,19 +122,19 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
                 break;
 
             case R.id.son1:
-                shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun1))).commit();
+                shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun1))).apply();
                 son1.setEnabled(false);
                 son2.setEnabled(true);
                 son3.setEnabled(true);
                 break;
             case R.id.son2:
-                shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun2))).commit();
+                shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun2))).apply();
                 son1.setEnabled(true);
                 son2.setEnabled(false);
                 son3.setEnabled(true);
                 break;
             case R.id.son3:
-                shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun3))).commit();
+                shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun3))).apply();
                 son1.setEnabled(true);
                 son2.setEnabled(true);
                 son3.setEnabled(false);
@@ -195,7 +196,7 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
             }
             SharedPreferences.Editor editor = shared.edit();
             editor.putString(FnKey, (String) t3.getText());
-            editor.commit();
+            editor.apply();
             editor.clear();
         }
 
@@ -226,12 +227,11 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
 //        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
         adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
-//        adView.setAdSize(AdSize.BANNER);
         adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest.Builder adRequest = new AdRequest.Builder();
-        adRequest.addTestDevice("7026FA2EC1DC7E60FBEA02C64D33BD8B"); //asus
-        adRequest.addTestDevice("53185CF5BFA5B2121DF7FA86E7064C22"); //huawei
+        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
+        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

@@ -99,6 +99,7 @@ public class Morse_SQL {
         HashMap<String, String> temp = new HashMap<>();
         temp.put("MyCQCQ", "CQCQCQ DE JAPAN");
         temp.put("QRA", "QRA");
+        temp.put("QRL", "QRL");
         temp.put("QRB", "QRB");
         temp.put("QRK5", "QRK5");
         temp.put("QRM5", "QRM5");

@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -125,7 +124,14 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
         point = new Point();
         Display display = getWindowManager().getDefaultDisplay();
         display.getSize(point);
-        GoogleAdmob();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (shared.getInt("admobe", 0) > 9) {
+            GoogleAdmob();
+        }
     }
 
     @Override
@@ -262,8 +268,8 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
         adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest.Builder adRequest = new AdRequest.Builder();
-        adRequest.addTestDevice("7026FA2EC1DC7E60FBEA02C64D33BD8B");
-        adRequest.addTestDevice("53185CF5BFA5B2121DF7FA86E7064C22");
+        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
+        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

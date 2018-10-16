@@ -17,4 +17,9 @@ SharedPreferences.Editor editor = shared.edit();
 editor.putString(FnKey, (String) t3.getText());
 FnKey Fn3,Fn4,Fn5,Fn6,Fn7,Fn8
 
-shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun1))).commit();;
+shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun1))).commit();
+
+
+        if (shared.getInt("admobe", 0) > 9) {
+            GoogleAdmob();
+        }

@@ -6,9 +6,9 @@ android {
         applicationId "com.kankanla.e560.m180907_morse"
         minSdkVersion 19
         targetSdkVersion 28
-        versionName '1.1'
+        versionName '1.2'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        versionCode 11
+        versionCode 12
     }
     buildTypes {
         release {

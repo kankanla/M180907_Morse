@@ -105,7 +105,9 @@ public class Morse_key extends AppCompatActivity {
         } else {
             ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(point.x, shared.getInt("layout2_Height", 600) - 30);
             l2.setLayoutParams(layoutParams);
-            GoogleAdmob();
+            if (shared.getInt("admobe", 0) > 9) {
+                GoogleAdmob();
+            }
         }
 
         Intent intent = new Intent(this, Morse_HZ.class);
@@ -234,8 +236,11 @@ public class Morse_key extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume");
         longClk = 0;
-        if (morse_sql.list_item() != null) {
-            Myadaputa myadaputa = new Myadaputa(morse_sql.list_item());
+
+        Cursor cursor = morse_sql.list_item();
+        if (cursor != null) {
+            shared.edit().putInt("admobe", cursor.getCount()).apply();
+            Myadaputa myadaputa = new Myadaputa(cursor);
             listView.setAdapter(myadaputa);
         }
     }
@@ -349,8 +354,8 @@ public class Morse_key extends AppCompatActivity {
         adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest.Builder adRequest = new AdRequest.Builder();
-        adRequest.addTestDevice("53185CF5BFA5B2121DF7FA86E7064C22");
-        adRequest.addTestDevice("7026FA2EC1DC7E60FBEA02C64D33BD8B");
+        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
+        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
