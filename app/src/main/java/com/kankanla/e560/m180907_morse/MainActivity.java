@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d(TAG, String.valueOf(point.x));
         Log.d(TAG, String.valueOf(point.y));
-
     }
 
     @Override
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-        if (shared.getInt("admobe", 0) > 1) {
+        if (shared.getInt("admobe", 0) > 5) {
             GoogleAdmob();
         }
     }

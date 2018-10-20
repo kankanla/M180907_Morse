@@ -24,6 +24,7 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
     private Point point;
     private SharedPreferences shared;
     private Button fn3, fn4, fn5, fn6, fn7, fn8;
+    private Button speed1, speed2, speed3;
     private Button son1, son2, son3;
 
     @Override
@@ -45,6 +46,16 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
         son3 = findViewById(R.id.son3);
         son3.setText(getString(R.string.set_sun3) + "Hz");
         son3.setOnClickListener(this);
+
+        speed1 = findViewById(R.id.speed1);
+        speed1.setText(getString(R.string.set_speed1));
+        speed1.setOnClickListener(this);
+        speed2 = findViewById(R.id.speed2);
+        speed2.setText(getString(R.string.set_speed2));
+        speed2.setOnClickListener(this);
+        speed3 = findViewById(R.id.speed3);
+        speed3.setText(getString(R.string.set_speed3));
+        speed3.setOnClickListener(this);
 
         fn3 = findViewById(R.id.Fn3);
         fn3.setOnClickListener(this);
@@ -69,7 +80,7 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        if (shared.getInt("admobe", 0) > 10) {
+        if (shared.getInt("admobe", 0) > 30) {
             GoogleAdmob();
         }
     }
@@ -138,6 +149,25 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
                 son1.setEnabled(true);
                 son2.setEnabled(true);
                 son3.setEnabled(false);
+                break;
+
+            case R.id.speed1:
+                shared.edit().putInt("speed", Integer.parseInt(getString(R.string.set_speed1))).apply();
+                speed1.setEnabled(false);
+                speed2.setEnabled(true);
+                speed3.setEnabled(true);
+                break;
+            case R.id.speed2:
+                shared.edit().putInt("speed", Integer.parseInt(getString(R.string.set_speed2))).apply();
+                speed1.setEnabled(true);
+                speed2.setEnabled(false);
+                speed3.setEnabled(true);
+                break;
+            case R.id.speed3:
+                shared.edit().putInt("speed", Integer.parseInt(getString(R.string.set_speed3))).apply();
+                speed1.setEnabled(true);
+                speed2.setEnabled(true);
+                speed3.setEnabled(false);
                 break;
         }
     }

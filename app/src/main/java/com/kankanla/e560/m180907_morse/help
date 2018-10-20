@@ -23,3 +23,5 @@ shared.edit().putInt("HZ", Integer.parseInt(getString(R.string.set_sun1))).commi
         if (shared.getInt("admobe", 0) > 9) {
             GoogleAdmob();
         }
+
+morse_hz.setBaseSpeed(shared.getInt("speed", Integer.parseInt(getString(R.string.set_speed3))));

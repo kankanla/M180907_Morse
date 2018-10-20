@@ -21,6 +21,7 @@ public class Morse_SQL {
         Log.d(TAG, "add_item");
         this.context = context;
         sql_db = new SQL_DB(context, DB_NAME, null, DB_VERSION);
+        list_item();
     }
 
     public int del_temp(int id) {
@@ -97,12 +98,17 @@ public class Morse_SQL {
 
     public void add_QRA() {
         HashMap<String, String> temp = new HashMap<>();
-        temp.put("MyCQCQ", "CQCQCQ DE JAPAN");
         temp.put("QRA", "QRA");
-        temp.put("QRL", "QRL");
         temp.put("QRB", "QRB");
+        temp.put("QRL", "QRL");
         temp.put("QRK5", "QRK5");
         temp.put("QRM5", "QRM5");
+        temp.put("MyCQCQ", "CQCQCQ DE JAPAN");
+        temp.put("ABCDE", "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        temp.put("SONG", "Jingle bell, jingle bell, jingle bell rock\n" +
+                "Jingle bells swing and jingle bells ring\n" +
+                "Snowin and blowin up bushels of fun\n" +
+                "Now the jingle hop has begun");
 
         SQLiteDatabase db = sql_db.getWritableDatabase();
         String cmd = "select id from main";

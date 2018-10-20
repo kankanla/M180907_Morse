@@ -105,7 +105,7 @@ public class Morse_key extends AppCompatActivity {
         } else {
             ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(point.x, shared.getInt("layout2_Height", 600) - 30);
             l2.setLayoutParams(layoutParams);
-            if (shared.getInt("admobe", 0) > 9) {
+            if (shared.getInt("admobe", 0) > 30) {
                 GoogleAdmob();
             }
         }
@@ -284,14 +284,14 @@ public class Morse_key extends AppCompatActivity {
         display.getSize(point);
     }
 
-
     public ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Morse_HZ.LocalBinder binder = (Morse_HZ.LocalBinder) service;
             morse_hz = binder.getService();
             morse_hz.setTextView(textView);
-            morse_hz.setHz(shared.getInt("HZ", 600));
+            morse_hz.setHz(shared.getInt("HZ", Integer.parseInt(getString(R.string.set_sun2))));
+            morse_hz.setBaseSpeed(shared.getInt("speed", Integer.parseInt(getString(R.string.set_speed2))));
             morse_hz.setSoundflag(shared.getBoolean("sw2", true));
             morse_hz.setLigthflag(shared.getBoolean("sw1", true));
             morse_hz.loop_play();

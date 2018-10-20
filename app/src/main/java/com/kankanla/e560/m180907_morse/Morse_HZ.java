@@ -34,7 +34,7 @@ public class Morse_HZ extends Service {
     private boolean soundflag = true;
     private boolean ligthflag = true;
     private TextView textView;
-    private int baseSpeed = 70;
+    private int baseSpeed = 90;
     private int beep_size = 0;
     private byte[] beep_on, beep_off;
     private Semaphore semaphore = new Semaphore(1);
@@ -377,6 +377,10 @@ public class Morse_HZ extends Service {
 
     public void setHz(int hz) {
         this.hz = hz;
+    }
+
+    public void setBaseSpeed(int baseSpeed) {
+        this.baseSpeed = baseSpeed;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

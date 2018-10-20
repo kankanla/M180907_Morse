@@ -6,6 +6,13 @@
     <string name="Morse_Set">Settings</string>
     <string name="Morse_Game">Morse_Game</string>
     <string name="set_sound">Sound</string>
+    <string name="set_sun1">800</string>
+    <string name="set_sun2">600</string>
+    <string name="set_sun3">400</string>
+    <string name="set_speed">Speed</string>
+    <string name="set_speed1">70</string>
+    <string name="set_speed2">90</string>
+    <string name="set_speed3">120</string>
     <string name="set_Light">Light</string>
     <string name="set_Backlight">Backlight</string>
     <string name="input_title">Item_name</string>
@@ -33,15 +40,10 @@
     <string name="Fn6">Fn6</string>
     <string name="Fn7">Fn7</string>
     <string name="Fn8">Fn8</string>
-    <string name="set_sun1">800</string>
-    <string name="set_sun2">600</string>
-    <string name="set_sun3">400</string>
     <string name="admob_1">ca-app-pub-0547405774182700/4487579851</string>
     <string name="admob_2">ca-app-pub-0547405774182700/2097220230</string>
     <string name="admob_3">ca-app-pub-0547405774182700/8353553115</string>
     <string name="admob_app_id">ca-app-pub-0547405774182700~1689848511</string>
     <string name="addTestDeviceH">53185CF5BFA5B2121DF7FA86E7064C22</string>
     <string name="addTestDeviceASUS">7026FA2EC1DC7E60FBEA02C64D33BD8B</string>
-
-
 </resources>
