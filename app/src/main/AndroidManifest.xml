@@ -28,6 +28,10 @@
         <activity android:name=".Add_Morse_item" />
         <activity android:name=".Morse_Sound" />
         <activity android:name=".Morse_Set"></activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id" />
     </application>
 
 </manifest>

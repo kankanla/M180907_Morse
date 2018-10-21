@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void GoogleAdmob() {
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
         AdView adView = new AdView(this);
 //        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 

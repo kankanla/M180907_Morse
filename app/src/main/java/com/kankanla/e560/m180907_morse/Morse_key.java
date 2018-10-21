@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class Morse_key extends AppCompatActivity {
     private final String TAG = "###Morse_key###";
@@ -347,6 +348,7 @@ public class Morse_key extends AppCompatActivity {
     }
 
     protected void GoogleAdmob() {
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
         AdView adView = new AdView(this);
 //        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
