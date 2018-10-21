@@ -130,7 +130,7 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        if (shared.getInt("admobe", 0) > 9) {
+        if (shared.getInt("admobe", 0) > 20) {
             GoogleAdmob();
         }
     }
