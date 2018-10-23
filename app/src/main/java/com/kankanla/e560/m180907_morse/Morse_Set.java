@@ -87,6 +87,7 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
     }
 
     protected void init() {
+        getSupportActionBar().hide();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         point = new Point();
         Display display = getWindowManager().getDefaultDisplay();

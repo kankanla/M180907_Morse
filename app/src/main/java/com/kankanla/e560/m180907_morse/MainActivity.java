@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.button3:
+                intent = new Intent(this, Morse_key2.class);
+                startActivity(intent);
                 break;
             default:
                 break;

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/morse_key_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Morse_key_backcolor"
+    android:orientation="vertical"
+    tools:context=".Morse_key">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--トップの光出力と設定部分-->
+        <LinearLayout
+            android:id="@+id/key2_l1"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:paddingLeft="12dp">
+            <!--出力窓-->
+            <TextView
+                android:id="@+id/cqcq"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_gravity="center"
+                android:background="@drawable/out_window" />
+            <!--設定項目エリア-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="left|right"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:padding="5dp"
+                        android:text="abcdefg"
+                        android:textSize="22dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <Switch
+                            android:id="@+id/sw_Ligth"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:enabled="false"
+                            android:text="@string/set_Light" />
+
+                        <Switch
+                            android:id="@+id/sw_Sound"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:text="@string/set_sound" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--keyboard-->
+        <RelativeLayout
+            android:id="@+id/morse_key2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary">
+
+
+            <LinearLayout
+                android:id="@+id/key2_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
