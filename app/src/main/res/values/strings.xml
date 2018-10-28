@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Morse Trainer</string>
     <string name="app_name2">M180907_Morse</string>
-    <string name="Morse_key">Morse_key</string>
+    <string name="Morse_Item">Morse_Item</string>
     <string name="Morse_Code">Morse_Code</string>
     <string name="Morse_Set">Settings</string>
+    <string name="Morse_KeyBoard">Morse_KeyBoard</string>
     <string name="Morse_Game">Morse_Game</string>
     <string name="set_sound">Sound</string>
     <string name="set_sun1">800</string>

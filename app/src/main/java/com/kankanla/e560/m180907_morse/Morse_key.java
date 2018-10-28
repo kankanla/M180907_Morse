@@ -186,6 +186,7 @@ public class Morse_key extends AppCompatActivity {
                 if (morse_hz != null) {
                     if (codetemp != null) {
                         morse_hz.add_MorseString(codetemp);
+                        morse_hz.ClearMorseList();
                     }
                 } else {
                     Log.d(TAG, "morse_hz == null");
@@ -296,6 +297,12 @@ public class Morse_key extends AppCompatActivity {
             morse_hz.setSoundflag(shared.getBoolean("sw2", true));
             morse_hz.setLigthflag(shared.getBoolean("sw1", true));
             morse_hz.loop_play();
+            morse_hz.setIntt(new Morse_HZ.getChang() {
+                @Override
+                public void MorseListChang(String x) {
+
+                }
+            });
         }
 
         @Override

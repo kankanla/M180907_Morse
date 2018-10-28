@@ -19,7 +19,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.OnClickListener {
 
     private final String TAG = "###MainActivity###";
     private Button buttonA, buttonB, buttonC;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         shared = getSharedPreferences("APP_SET", MODE_PRIVATE);
 
         buttonA = findViewById(R.id.button1);
-        buttonA.setText(getString(R.string.Morse_key));
+        buttonA.setText(getString(R.string.Morse_Item));
         buttonA.setOnClickListener(this);
 
         buttonB = findViewById(R.id.button2);
@@ -46,9 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonB.setOnClickListener(this);
 
         buttonC = findViewById(R.id.button3);
-        buttonC.setText(getString(R.string.Morse_Game));
+        buttonC.setText(getString(R.string.Morse_KeyBoard));
         buttonC.setOnClickListener(this);
-        buttonC.setEnabled(false);
+        buttonC.setOnLongClickListener(this);
+//        buttonC.setEnabled(false);
 
         imageView = findViewById(R.id.imageView2);
 
@@ -121,6 +122,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        Log.d(TAG, "onLongClick");
+        switch (v.getId()) {
+            case R.id.button3:
+                intent = new Intent(this, Morse_key2.class);
+                startActivity(intent);
+                break;
+        }
+        return false;
+    }
+
     protected void GoogleAdmob() {
         MobileAds.initialize(this, getString(R.string.admob_app_id));
         AdView adView = new AdView(this);
@@ -141,4 +154,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout layout = findViewById(R.id.main_admob);
         layout.addView(adView, -1, layoutParams);
     }
+
+
 }

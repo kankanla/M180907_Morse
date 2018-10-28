@@ -26,6 +26,7 @@ public class Morse_HZ extends Service {
     private IBinder localBinder = new LocalBinder();
     private AudioTrack audioTrack;
     private int buferSize;
+
     private List<Character> morseList = new ArrayList<>();
     private int Beeppling = 0;
     private int sampleRate = 44100;
@@ -40,9 +41,24 @@ public class Morse_HZ extends Service {
     private Semaphore semaphore = new Semaphore(1);
     private HashMap<String, String> CODE = new HashMap<>();
     private SharedPreferences shared;
+    private getChang getChang;
+
+    interface getChang {
+        void MorseListChang(String x);
+    }
+
+    public void setIntt(getChang getChang) {
+        this.getChang = getChang;
+
+    }
 
     public Morse_HZ() {
         Log.d(TAG, "Morse_HZ");
+    }
+
+    public Morse_HZ(getChang getChang) {
+        Log.d(TAG, "Morse_HZ");
+        this.getChang = getChang;
     }
 
     {
@@ -155,6 +171,10 @@ public class Morse_HZ extends Service {
         }
     }
 
+    public List<Character> getMorseList() {
+        return morseList;
+    }
+
     public void ClearMorseList() {
         morseList.clear();
     }
@@ -162,6 +182,7 @@ public class Morse_HZ extends Service {
     public void addCharacter(String string) {
         Log.d(TAG, "addCharacter");
         char[] temp = string.toCharArray();
+        getChang.MorseListChang(string);
         for (Character c : temp) {
             morseList.add(c);
         }
@@ -474,6 +495,14 @@ public class Morse_HZ extends Service {
 
     public class LocalBinder extends Binder implements IBinder {
         public Morse_HZ getService() {
+            // Return this instance of LocalService so clients can call public methods
+            Log.d(TAG, "LocalBinder");
+            return Morse_HZ.this;
+        }
+    }
+
+    public class LocalBinder2 extends Binder implements IBinder {
+        public Morse_HZ getService(getChang getChang) {
             // Return this instance of LocalService so clients can call public methods
             Log.d(TAG, "LocalBinder");
             return Morse_HZ.this;
