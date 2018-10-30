@@ -265,6 +265,7 @@ public class Morse_Set extends AppCompatActivity implements View.OnClickListener
         AdRequest.Builder adRequest = new AdRequest.Builder();
         adRequest.addTestDevice(getString(R.string.addTestDeviceH));
         adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
+        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

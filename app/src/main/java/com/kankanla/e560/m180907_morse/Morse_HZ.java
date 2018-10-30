@@ -86,7 +86,7 @@ public class Morse_HZ extends Service {
         CODE.put("P", ".--.");
         CODE.put("Q", "--.-");
         CODE.put("R", ".-.");
-        CODE.put("S", "---");
+        CODE.put("S", "...");
         CODE.put("T", "-");
         CODE.put("U", "..-");
         CODE.put("V", "...-");
@@ -403,6 +403,7 @@ public class Morse_HZ extends Service {
     public void setBaseSpeed(int baseSpeed) {
         this.baseSpeed = baseSpeed;
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void Beep_OFF() {

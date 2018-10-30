@@ -6,14 +6,18 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -200,6 +204,56 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            morse_hz.Beep_ON();
+            if ((Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)) {
+                textView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.setBackgroundColor(Color.WHITE);
+                    }
+                });
+            } else {
+                textView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.setBackground(getDrawable(R.drawable.out_window2));
+                    }
+                });
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            morse_hz.Beep_OFF();
+            if ((Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)) {
+                textView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.setBackgroundColor(Color.BLACK);
+                    }
+                });
+            } else {
+                textView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.setBackground(getDrawable(R.drawable.out_window));
+                    }
+                });
+            }
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -230,6 +284,7 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
         AdRequest.Builder adRequest = new AdRequest.Builder();
         adRequest.addTestDevice(getString(R.string.addTestDeviceH));
         adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
+        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
