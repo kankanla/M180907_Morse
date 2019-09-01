@@ -429,35 +429,29 @@ public class Morse_HZ extends Service {
                 try {
                     buferSize = AudioTrack.getMinBufferSize(
                             sampleRate,
-                            AudioFormat.CHANNEL_OUT_MONO,
-                            AudioFormat.ENCODING_PCM_8BIT
+                            AudioFormat.CHANNEL_OUT_STEREO,
+                            AudioFormat.ENCODING_PCM_16BIT
                     );
 
                     audioTrack = new AudioTrack(
                             AudioManager.STREAM_MUSIC,
                             sampleRate,
-                            AudioFormat.CHANNEL_OUT_MONO,
-                            AudioFormat.ENCODING_PCM_8BIT,
+                            AudioFormat.CHANNEL_OUT_STEREO,
+                            AudioFormat.ENCODING_PCM_16BIT,
                             buferSize,
                             AudioTrack.MODE_STREAM
                     );
 
-                    beep_size = sampleRate / hz / 2;
-                    beep_on = new byte[sampleRate];
-                    beep_off = new byte[sampleRate];
-                    for (int i = 0; i < sampleRate; i++) {
-                        if (i % 3 == 0) {
-                            beep_on[i] = 127;
-                        } else {
-                            beep_on[i] = 120;
-                        }
-                        beep_off[i] = 0;
+                    byte[] bs = new byte[44100];
+                    Double temp;
+                    for (int i = 0; i < bs.length; i++) {
+                        temp = i / 2 * Math.PI / (44100 / (double) hz);
+                        bs[i] = (byte) (Math.sin(temp) * 120);
                     }
 
                     while (true) {
                         if (soundflag) {
-                            audioTrack.write(beep_on, 0, beep_size);
-                            audioTrack.write(beep_off, 0, beep_size);
+                            audioTrack.write(bs, 0, bs.length);
                             if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
                                 audioTrack.play();
                                 audioTrack.setVolume(0.0f);
@@ -466,7 +460,6 @@ public class Morse_HZ extends Service {
                             audioTrack.setVolume(0.0f);
                         }
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (audioTrack != null) {
