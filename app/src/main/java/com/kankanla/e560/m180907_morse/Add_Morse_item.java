@@ -39,6 +39,7 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "###onCreate###");
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
         setContentView(R.layout.activity_add_morse_item);
         getSupportActionBar().hide();
         init();
@@ -262,8 +263,6 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
     }
 
     protected void GoogleAdmob() {
-        MobileAds.initialize(this, getString(R.string.admob_app_id));
-
         AdView adView = new AdView(this);
 //        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
@@ -271,9 +270,9 @@ public class Add_Morse_item extends AppCompatActivity implements View.OnClickLis
         adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest.Builder adRequest = new AdRequest.Builder();
-        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
-        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
-        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

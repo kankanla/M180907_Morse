@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.kankanla.e560.m180907_morse"
         minSdkVersion 19
-        targetSdkVersion 28
-        versionName '1.4'
+        targetSdkVersion 29
+        versionName '2.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        versionCode 14
+        versionCode 21
     }
     buildTypes {
         release {

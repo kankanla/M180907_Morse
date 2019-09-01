@@ -123,7 +123,6 @@ public class Morse_SQL {
         db.close();
     }
 
-
     public Cursor list_item() {
         Log.d(TAG, "list_item");
         SQLiteDatabase db = sql_db.getReadableDatabase();

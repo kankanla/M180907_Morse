@@ -57,6 +57,7 @@ public class Morse_key extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
         setContentView(R.layout.activity_morse_key);
         getSupportActionBar().hide();
         init();
@@ -95,10 +96,6 @@ public class Morse_key extends AppCompatActivity {
             }
         });
 
-
-//        testonly
-//        viewTreeObserver = l3.getViewTreeObserver();
-//        viewTreeObserver.addOnGlobalLayoutListener(layoutListener);
 
         if (shared.getInt("layout2_Height", 0) == 0 || shared.getInt("displayHeight", 0) != point.y) {
             viewTreeObserver = l3.getViewTreeObserver();
@@ -354,7 +351,7 @@ public class Morse_key extends AppCompatActivity {
     }
 
     protected void GoogleAdmob() {
-        MobileAds.initialize(this, getString(R.string.admob_app_id));
+
         AdView adView = new AdView(this);
 //        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
@@ -362,9 +359,9 @@ public class Morse_key extends AppCompatActivity {
         adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest.Builder adRequest = new AdRequest.Builder();
-        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
-        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
-        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

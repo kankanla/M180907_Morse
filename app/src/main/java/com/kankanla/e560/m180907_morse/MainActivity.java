@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         shared = getSharedPreferences("APP_SET", MODE_PRIVATE);
@@ -135,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     protected void GoogleAdmob() {
-        MobileAds.initialize(this, getString(R.string.admob_app_id));
         AdView adView = new AdView(this);
 //        adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
@@ -143,9 +143,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest.Builder adRequest = new AdRequest.Builder();
-        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
-        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
-        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -155,6 +154,4 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         LinearLayout layout = findViewById(R.id.main_admob);
         layout.addView(adView, -1, layoutParams);
     }
-
-
 }

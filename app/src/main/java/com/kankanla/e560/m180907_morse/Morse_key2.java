@@ -55,6 +55,7 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
         setContentView(R.layout.activity_morse_key2);
         Intent intent = new Intent(this, Morse_HZ.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -120,6 +121,7 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
         key_map_Layout = findViewById(R.id.morse_key2);
         viewTreeObserver = linearLayout.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onGlobalLayout() {
                 Log.d(TAG, String.valueOf(linearLayout.getHeight()));
@@ -154,7 +156,11 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
                 button.setOnClickListener(this);
                 TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(w, h);
                 button.setLayoutParams(layoutParams);
-                button.setTextSize(30);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    button.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+                } else {
+                    button.setTextSize(30);
+                }
                 button.setPaddingRelative(0, 0, 0, 0);
                 tableRow.addView(button);
             }
@@ -164,6 +170,7 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
         key_map_Layout.addView(tableLayout);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         Button button = (Button) v;
@@ -176,7 +183,6 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
             Log.d(TAG, "morse_hz == null");
             return;
         }
-
     }
 
     @Override
@@ -274,7 +280,7 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
     }
 
     protected void GoogleAdmob() {
-        MobileAds.initialize(this, getString(R.string.admob_app_id));
+
         AdView adView = new AdView(this);
         adView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 
@@ -282,9 +288,9 @@ public class Morse_key2 extends AppCompatActivity implements View.OnClickListene
         adView.setAdUnitId(getString(R.string.admob_1));
 
         AdRequest.Builder adRequest = new AdRequest.Builder();
-        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
-        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
-        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceH));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceASUS));
+//        adRequest.addTestDevice(getString(R.string.addTestDeviceMI));
         adView.loadAd(adRequest.build());
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
